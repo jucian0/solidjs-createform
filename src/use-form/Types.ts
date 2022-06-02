@@ -1,3 +1,10 @@
+type Input = {
+   oninput: ((this: GlobalEventHandlers, ev: Event) => any) ;
+   onblur: ((this: GlobalEventHandlers, ev: FocusEvent) => any) ;
+   value: string,
+}
+
+//Pick<HTMLInputElement, 'oninput' & 'onblur' & 'value'>
 
 /**
  * state is one of properties that is returned by useForm hook, this object contains the current state of form when the form is controlled or debounced.
@@ -49,43 +56,58 @@ export type CreateFormArgs<T> = {
 }
 
 /**
- * KeyValue type represents a key value object that has a key and a value.
- * It' helpful to use this type when you want to use a key value object as a key of an object.
- **/
-export type KeyValue<T> = {
-   [k: string]: T
+ * 
+ */
+export type Form<T> = {
+   /**
+    * `register` is a function that returns a object that contains the input properties.
+    * @param name the name of the field.
+    * @returns {object} an object that contains the input properties.
+    * @example <input {...register('name')} />
+    **/
+   register: (name: string) => Input,
+   /**
+    * `state` is an object that contains the values of form, errors of form, touched of form.
+    **/
+   state: State<T>
+   /**
+    * `reset` is a function that resets the form.
+    **/
+   reset: () => void
+   /**
+    * `resetFieldValue` is a function that resets the value of a field.
+    * @param name the name of the field.
+    **/
+   resetFieldValue: (name: string) => void
+   /**
+    * `setFieldValue` is a function that sets the value of a field.
+    * @param name the name of the field.
+    * @param value the value of the field.
+    **/
+   setFieldValue: (name: string, value: any) => void
+   /**
+    * `resetFieldError` is a function that resets the error of a field.
+    * @param name the name of the field.
+    **/
+   resetFieldError: (name: string) => void
+   /**
+    * `setFieldError` is a function that sets the error of a field.
+    * @param name the name of the field.
+    * @param error the error of the field.
+    **/
+   setFieldError: (name: string, error: any) => void
+   /**
+    * `resetFieldTouched` is a function that resets the touched of a field.
+    * @param name the name of the field.
+    **/
+   resetFieldTouched: (name: string) => void
+   /**
+      * `setFieldTouched` is a function that sets the touched of a field.
+      * @param name the name of the field.
+      **/
+   setFieldTouched: (name: string, touched: boolean) => void
+   /**
+      * `isValid` is a boolean that indicates if the form is valid.
+      **/
+   isValid: boolean
 }
-
-/**
- * Inputs types
- **/
-export type PrimitiveValue = string | number | boolean | Date | null | undefined
-
-export type Checkbox = HTMLInputElement
-
-export type Radio = HTMLInputElement
-
-export type Select = HTMLSelectElement
-
-export type Text = HTMLInputElement
-
-export type TextArea = HTMLTextAreaElement
-
-export type PrimitiveEvent = EventTarget & {
-   value: PrimitiveValue
-}
-
-export type Field = Checkbox & Radio & Select & Text & TextArea & PrimitiveEvent
-
-export type Mode = 'onChange' | 'onSubmit' | 'onInput'
-
-export type HookArgs<T> = {
-   onChange?: (state: T) => T | void
-   onBlur?: (state: T) => T | void
-   onSubmit?: (state: T) => T | void
-   mode?: Mode
-}
-
-//export type EventChange = React.ChangeEvent<Field> & CustomEvent<Field>
-
-export type StateChange<T> = T | ((state: T) => T)
