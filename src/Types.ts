@@ -1,7 +1,7 @@
 type Input = {
-   onInput: ((this: GlobalEventHandlers, ev: Event) => any) ;
-   onBlur: ((this: GlobalEventHandlers, ev: FocusEvent) => any) ;
-   value: string,
+   onInput: (this: GlobalEventHandlers, ev: Event) => any
+   onBlur: (this: GlobalEventHandlers, ev: FocusEvent) => any
+   value: string
 }
 
 //Pick<HTMLInputElement, 'oninput' & 'onblur' & 'value'>
@@ -56,7 +56,7 @@ export type createformArgs<T> = {
 }
 
 /**
- * 
+ *
  */
 export type Form<T> = {
    /**
@@ -65,7 +65,7 @@ export type Form<T> = {
     * @returns {object} an object that contains the input properties.
     * @example <input {...register('name')} />
     **/
-   register: (name: string) => Input,
+   register: (name: string) => Input
    /**
     * `state` is an object that contains the values of form, errors of form, touched of form.
     **/
@@ -102,12 +102,12 @@ export type Form<T> = {
     **/
    resetFieldTouched: (name: string) => void
    /**
-      * `setFieldTouched` is a function that sets the touched of a field.
-      * @param name the name of the field.
-      **/
+    * `setFieldTouched` is a function that sets the touched of a field.
+    * @param name the name of the field.
+    **/
    setFieldTouched: (name: string, touched: boolean) => void
    /**
-      * `isValid` is a boolean that indicates if the form is valid.
-      **/
+    * `isValid` is a boolean that indicates if the form is valid.
+    **/
    isValid: boolean
 }
