@@ -4,7 +4,6 @@
 
 > A SolidJS package to create forms easily and quickly.
 
-### ✨ [Demo](https://codesandbox.io/s/createform-2u2ju)
 # createform
 
 Createform is an open-source package to create forms for SolidJS applications. It's based on [useForm](https://useform.org)
