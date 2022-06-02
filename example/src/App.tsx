@@ -1,6 +1,7 @@
 import { Component, createSignal } from 'solid-js'
 import styles from './App.module.css'
 import { createform } from '../../src'
+import * as yup from 'yup'
 
 const form = createform({
    initialValues: {
@@ -15,7 +16,10 @@ const form = createform({
       bool: true,
       distance: 23,
       date: new Date().toLocaleDateString()
-   }
+   },
+   validationSchema: yup.object().shape({
+      name: yup.string().required('Name is required')
+   })
 })
 
 const App: Component = () => {
@@ -27,6 +31,7 @@ const App: Component = () => {
       <div class={styles.App}>
          <header class={styles.header}>
             <input placeholder="name" {...register('name')} />
+            {state.errors.name && <span>{state.errors.name}</span>}
             <input placeholder="lastName" {...register('lastName')} />
             <input placeholder="Street" {...register('address.street')} />
             <input type="checkbox" {...register('bool', 'checkbox')} />

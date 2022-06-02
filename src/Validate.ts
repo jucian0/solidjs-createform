@@ -5,7 +5,7 @@ export function makeDotNotation(str: string) {
    return str.split('[').join('.').split(']').join('')
 }
 
-export function validate<TValues extends {}>(
+export function asyncValidate<TValues extends {}>(
    values: TValues,
    validationSchema: Schema<TValues>
 ) {

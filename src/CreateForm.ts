@@ -1,6 +1,7 @@
 import { createStore } from 'solid-js/store'
-import { createformArgs, Form, InputType } from './Types'
+import { createformArgs, Form } from './Types'
 import * as Dot from './ObjectUtils'
+import { asyncValidate } from './Validate'
 
 const defaultValues = {
    initialValues: {},
@@ -51,14 +52,27 @@ export function createform<T extends createformArgs<T['initialValues']>>(
       return {
          onInput: (e: any) => {
             const value = e.target.value
-            console.log(value)
-            setState(`values`, Dot.set(values, name, value))
+            const nextValues = Dot.set(values, name, value)
+            setState(`values`, nextValues)
+            validate(nextValues)
          },
          onBlur: () => {
             setState(`touched`, Dot.set(touched, name, true))
          },
          [inputValueType]: value,
          type
+      }
+   }
+
+   async function validate(values: T['initialValues']) {
+      try {
+         await asyncValidate(values, initialState.validationSchema)
+         console.log('validate')
+         setState(`errors`, {})
+      } catch (e) {
+         console.log('invalidate')
+         setState(`errors`, e)
+         setState(`isValid`, false)
       }
    }
 
