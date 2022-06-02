@@ -4,60 +4,80 @@
 
 > A SolidJS package to create forms easily and quickly.
 
-### 🏠 [Homepage](https://createform.org)
-
 ### ✨ [Demo](https://codesandbox.io/s/createform-2u2ju)
 # createform
 
-
+Createform is an open-source package to create forms for SolidJS applications. Its based on [useForm](https://useform.org)
 
 
 
 ## Motivation
 
-Today we have a lot of form packages, and this project don't pretend to be the number one, this is just a new way to create hooks to manage your forms. But if you guys like this project, we can publish it, and maintain it.
+Since SolidJS is a new framework, there is no existing a great package to create forms. I decided to create this package to simplify the process of creating forms. 
 
-## First step
-The first step is to create your form with the `createform` function, this function returns a hook that you can use to manage your form, wherever you want to use.
 
-``` javascript
+## How to use it
+To use `createform` you need to import it in your SolidJS application.
 
-export const useLoginForm = createform({
+```js
+import { createForm } from 'createform'
+```
+
+Then you can create a form.
+
+```js
+const form = createForm({
   initialValues: {
-    email: 'juciano@juciano.com',
-    password: 'yourpassword',
-  }
+    name: '',
+    email: '',
+    password: '',
+  },
 })
 ```
 
-## Second step
-The second step is to create a component to render your form, you can use the `useLoginForm` hook to get the form state and manage it.
+Now you can use it everywhere in your SolidJS application.
 
-```jsx
-   import { useLoginForm } from 'react-create-form'
-   
-   const LoginForm = () => {
-      const { handleSubmit, register } = useLoginForm()
+```js
 
-      function onSubmit(values) {
-        console.log(values)
-      }
-   
-      return (
-         <form onSubmit={handleSubmit(onSubmit)}>
-         <input type="email" ref={register('email')} />
-         <input type="password" ref={register('password')}/>
-         <button type="submit">Submit</button>
-         </form>
-      )
-   }
+function App() {
+  const { register, handleSubmit, errors } = form
+
+  function onSubmit(data) {
+    console.log(data)
+  }
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input type="text" {...register('name')} />
+        <input type="email" {...register('email')} />
+        <input type="password" {...register('password')} />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  )
+}
 ```
 
+## Validation ?
 
+CreateForm use yup validation schema, so you just need to pass a validation schema to the `createForm` function.
+
+```js
+const form = createForm({
+  initialValues: {
+    name: '',
+    email: '',
+    password: '',
+  },
+  validationSchema: yup.object({
+    name: yup.string().required('Name is required'),
+    email: yup.string().email('Invalid email').required('Email is required'),
+    password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+  }),
+})
+```
 # It's All.
-
-## Read the full documentation [here](https://createform.org/docs/).
-### [Post](https://dev.to/jucian0/building-forms-with-createform-1cna)
 
 ## 🤝 Contributing
 
@@ -67,9 +87,9 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 Give a ⭐️ if this project helped you!
 
-[![Stargazers repo roster for @use-form/use-form](https://reporoster.com/stars/use-form/use-form)](https://github.com/use-form/use-form/stargazers)
+[![Stargazers repo roster for @use-form/use-form](https://reporoster.com/stars/use-form/use-form)](https://github.com/jucian0/useform/stargazers)
 
 ## 📝 License
 
-Copyright © 2021 [createform](https://github.com/use-form).<br />
+Copyright © 2021 [createform](https://github.com/jucian0).<br />
 This project is [MIT](https://github.com/use-form/use-form/blob/53debd6986650f76561795f2069d6eebc5db6c65/LICENSE) licensed.
