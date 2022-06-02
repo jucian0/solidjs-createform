@@ -1,8 +1,8 @@
 import { Component, createSignal } from 'solid-js';
 import styles from './App.module.css';
-import { createForm } from './use-form/CreateForm';
+import { createform } from '../../src';
 
-const form = createForm({
+const form = createform({
   initialValues: {
     name: 'Juciano',
     lastName: '',
@@ -20,11 +20,6 @@ const App: Component = () => {
   const { register, state, setFieldValue, reset, isValid } = form
 
   const [test, setTest] = createSignal('')
-
-  // createEffect(() => {
-  //   console.log(state.values.name)
-  // })
-
 
   return (
     <div class={styles.App}>

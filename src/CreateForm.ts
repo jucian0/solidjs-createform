@@ -1,5 +1,5 @@
 import { createStore, } from "solid-js/store";
-import { CreateFormArgs, Form } from "./Types";
+import { createformArgs, Form } from "./Types";
 import * as Dot from './ObjectUtils';
 
 const defaultValues = {
@@ -9,11 +9,11 @@ const defaultValues = {
 }
 
 /**
- * createForm function create a form Store and return a hook that can be used to manage the form state.
- * @param args CreateFormArgs type that contains the initial values of form, initial errors of form, initial touched of form,
+ * createform function create a form Store and return a hook that can be used to manage the form state.
+ * @param args createformArgs type that contains the initial values of form, initial errors of form, initial touched of form,
  * @returns {function(*): *} a hook that can be used to manage the form state.
  **/
-export function createForm<T extends CreateFormArgs<T['initialValues']>>(args:T):Form<T['initialValues']> {
+export function createform<T extends createformArgs<T['initialValues']>>(args:T):Form<T['initialValues']> {
 
    const initialState = {...defaultValues, ...args}
    const restore = Dot.clone(initialState)

@@ -1,0 +1,22 @@
+{
+  "name": "createform",
+  "version": "0.0.0-beta",
+  "description": "",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.6.4",
+    "vite": "^2.9.9",
+    "vite-plugin-solid": "^2.2.6"
+  },
+  "dependencies": {
+    "@types/yup": "^0.29.14",
+    "solid-js": "^1.4.2",
+    "yup": "^0.32.11"
+  }
+}

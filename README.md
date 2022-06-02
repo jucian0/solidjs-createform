@@ -1,34 +1,75 @@
-## Usage
+![Logo](img/logo3.png)
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+<h1 align="center">Welcome to createform 👋</h1>
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+> A SolidJS package to create forms easily and quickly.
 
-```bash
-$ npm install # or pnpm install or yarn install
+### 🏠 [Homepage](https://createform.org)
+
+### ✨ [Demo](https://codesandbox.io/s/createform-2u2ju)
+# createform
+
+
+
+
+
+## Motivation
+
+Today we have a lot of form packages, and this project don't pretend to be the number one, this is just a new way to create hooks to manage your forms. But if you guys like this project, we can publish it, and maintain it.
+
+## First step
+The first step is to create your form with the `createform` function, this function returns a hook that you can use to manage your form, wherever you want to use.
+
+``` javascript
+
+export const useLoginForm = createform({
+  initialValues: {
+    email: 'juciano@juciano.com',
+    password: 'yourpassword',
+  }
+})
 ```
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
+## Second step
+The second step is to create a component to render your form, you can use the `useLoginForm` hook to get the form state and manage it.
 
-## Available Scripts
+```jsx
+   import { useLoginForm } from 'react-create-form'
+   
+   const LoginForm = () => {
+      const { handleSubmit, register } = useLoginForm()
 
-In the project directory, you can run:
+      function onSubmit(values) {
+        console.log(values)
+      }
+   
+      return (
+         <form onSubmit={handleSubmit(onSubmit)}>
+         <input type="email" ref={register('email')} />
+         <input type="password" ref={register('password')}/>
+         <button type="submit">Submit</button>
+         </form>
+      )
+   }
+```
 
-### `npm dev` or `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# It's All.
 
-The page will reload if you make edits.<br>
+## Read the full documentation [here](https://createform.org/docs/).
+### [Post](https://dev.to/jucian0/building-forms-with-createform-1cna)
 
-### `npm run build`
+## 🤝 Contributing
 
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/use-form/use-form/issues). You can also take a look at the [contributing guide](https://github.com/Jucian0/use-form/blob/main/CONTRIBUTING.md).
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Show your support
 
-## Deployment
+Give a ⭐️ if this project helped you!
 
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+[![Stargazers repo roster for @use-form/use-form](https://reporoster.com/stars/use-form/use-form)](https://github.com/use-form/use-form/stargazers)
+
+## 📝 License
+
+Copyright © 2021 [createform](https://github.com/use-form).<br />
+This project is [MIT](https://github.com/use-form/use-form/blob/53debd6986650f76561795f2069d6eebc5db6c65/LICENSE) licensed.

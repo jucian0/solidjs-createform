@@ -7,7 +7,7 @@ type Input = {
 //Pick<HTMLInputElement, 'oninput' & 'onblur' & 'value'>
 
 /**
- * state is one of properties that is returned by useForm hook, this object contains the current state of form when the form is controlled or debounced.
+ * state is one of properties that is returned by createform hook, this object contains the current state of form when the form is controlled or debounced.
  */
 export type State<T> = {
    values: T
@@ -41,10 +41,10 @@ export type Errors<Values> = {
 }
 
 /**
- * useForm hook needs an object that describe and provide some properties like initial values of form, initial errors of form, initial touched of form,
+ * createform hook needs an object that describe and provide some properties like initial values of form, initial errors of form, initial touched of form,
  * and needs know what kind of form, is Controlled, debounced is about that.
  */
-export type CreateFormArgs<T> = {
+export type createformArgs<T> = {
    /** represents a initial value of form */
    readonly initialValues?: T
    /** represents a initial values of inputs errors */
