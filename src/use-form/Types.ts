@@ -1,6 +1,6 @@
 type Input = {
-   oninput: ((this: GlobalEventHandlers, ev: Event) => any) ;
-   onblur: ((this: GlobalEventHandlers, ev: FocusEvent) => any) ;
+   onInput: ((this: GlobalEventHandlers, ev: Event) => any) ;
+   onBlur: ((this: GlobalEventHandlers, ev: FocusEvent) => any) ;
    value: string,
 }
 
