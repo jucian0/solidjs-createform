@@ -7,17 +7,17 @@
 ### ✨ [Demo](https://codesandbox.io/s/createform-2u2ju)
 # createform
 
-Createform is an open-source package to create forms for SolidJS applications. Its based on [useForm](https://useform.org)
+Createform is an open-source package to create forms for SolidJS applications. It's based on [useForm](https://useform.org)
 
 
 
 ## Motivation
 
-Since SolidJS is a new framework, there is no existing a great package to create forms. I decided to create this package to simplify the process of creating forms. 
+Since SolidJS is a new framework, there is no existing great package to create forms. I decided to create this package to simplify the process of creating forms. 
 
 
 ## How to use it
-To use `createform` you need to import it in your SolidJS application.
+To use `createform` you need to import it into your SolidJS application.
 
 ```js
 import { createForm } from 'createform'
@@ -59,9 +59,9 @@ function App() {
 }
 ```
 
-## Validation ?
+## Validation
 
-CreateForm use yup validation schema, so you just need to pass a validation schema to the `createForm` function.
+CreateForm uses yup validation schema, so you just need to pass a validation schema to the `createForm` function.
 
 ```js
 const form = createForm({
