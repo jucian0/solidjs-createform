@@ -1,5 +1,5 @@
 {
-  "name": "solid-js-createform",
+  "name": "solidjs-createform",
   "version": "0.0.1-beta",
   "description": "createform provides a way to create complex forms easily for SolidJS.",
   "keywords": [
@@ -9,7 +9,8 @@
     "forms",
     "form-validation",
     "validation",
-    "typescript"
+    "typescript",
+    "solid"
   ],
   "typings": "dist/index.d.ts",
   "main": "dist/index.js",
