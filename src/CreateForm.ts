@@ -1,5 +1,5 @@
 import { createStore } from 'solid-js/store'
-import { createformArgs, Form } from './Types'
+import { createformArgs, Form, InputType } from './Types'
 import * as Dot from './ObjectUtils'
 
 const defaultValues = {
@@ -38,20 +38,32 @@ export function createform<T extends createformArgs<T['initialValues']>>(
 
    const { values, errors, touched, isValid } = state
 
-   function register(name: string) {
+   function register(name: string, type = 'text') {
+      const value = Dot.get(values, name)
+
+      const inputValueType =
+         type === 'checkbox'
+            ? 'checked'
+            : type === 'radio'
+            ? 'selected'
+            : 'value'
+
       return {
          onInput: (e: any) => {
             const value = e.target.value
+            console.log(value)
             setState(`values`, Dot.set(values, name, value))
          },
          onBlur: () => {
             setState(`touched`, Dot.set(touched, name, true))
          },
-         value: Dot.get(values, name)
+         [inputValueType]: value,
+         type
       }
    }
 
    function reset() {
+      console.log(restore.initialValues)
       setState(`values`, restore.initialValues)
    }
 

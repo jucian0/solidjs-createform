@@ -1,8 +1,27 @@
 type Input = {
    onInput: (this: GlobalEventHandlers, ev: Event) => any
    onBlur: (this: GlobalEventHandlers, ev: FocusEvent) => any
-   value: string
+   [key: string]: any
 }
+
+export type InputType =
+   | 'text'
+   | 'checkbox'
+   | 'radio'
+   | 'number'
+   | 'email'
+   | 'password'
+   | 'tel'
+   | 'url'
+   | 'search'
+   | 'date'
+   | 'time'
+   | 'datetime-local'
+   | 'month'
+   | 'week'
+   | 'color'
+   | 'range'
+   | 'file'
 
 //Pick<HTMLInputElement, 'oninput' & 'onblur' & 'value'>
 
@@ -65,7 +84,10 @@ export type Form<T> = {
     * @returns {object} an object that contains the input properties.
     * @example <input {...register('name')} />
     **/
-   register: (name: string) => Input
+   register: (
+      name: string,
+      type?: 'text' | 'radio' | 'select' | 'checkbox' | 'range' | 'date'
+   ) => Input
    /**
     * `state` is an object that contains the values of form, errors of form, touched of form.
     **/
