@@ -1,5 +1,5 @@
 {
-  "name": "createform",
+  "name": "solid-js-createform",
   "version": "0.0.1-beta",
   "description": "createform provides a way to create complex forms easily for SolidJS.",
   "keywords": [
