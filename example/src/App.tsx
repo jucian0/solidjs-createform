@@ -21,7 +21,11 @@ const form = createForm({
       name: yup
          .string()
          .required('Name is required')
-         .min(3, 'Name must be at least 3 characters')
+         .min(3, 'Name must be at least 3 characters'),
+      lastName: yup
+         .string()
+         .required('Last name is required')
+         .max(10, 'Last name must be at most 10 characters')
    })
 })
 
@@ -30,16 +34,13 @@ const App: Component = () => {
 
    const [test, setTest] = createSignal('')
 
-   createEffect(() => {
-      console.log(state.values.name, '<<<<<<<<<')
-   })
-
    return (
       <div class={styles.App}>
          <header class={styles.header}>
             <input placeholder="name" {...register('name')} />
             {state.touched.name && <span>{state.errors.name}</span>}
             <input placeholder="lastName" {...register('lastName')} />
+            {state.touched.lastName && <span>{state.errors.lastName}</span>}
             <input placeholder="Street" {...register('address.street')} />
             <input {...register('bool', 'checkbox')} />
             <input placeholder="City" {...register('address.city')} />
