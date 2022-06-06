@@ -1,11 +1,11 @@
 import { Component, createSignal } from 'solid-js'
 import styles from './App.module.css'
-import { createform } from '../../src'
+import { createForm } from '../../src'
 import * as yup from 'yup'
 
-const form = createform({
+const form = createForm({
    initialValues: {
-      name: 'Juciano',
+      name: '',
       lastName: '',
       address: {
          street: '',
@@ -18,7 +18,10 @@ const form = createform({
       date: new Date().toLocaleDateString()
    },
    validationSchema: yup.object().shape({
-      name: yup.string().required('Name is required')
+      name: yup
+         .string()
+         .required('Name is required')
+         .min(3, 'Name must be at least 3 characters')
    })
 })
 
@@ -31,7 +34,7 @@ const App: Component = () => {
       <div class={styles.App}>
          <header class={styles.header}>
             <input placeholder="name" {...register('name')} />
-            {state.errors.name && <span>{state.errors.name}</span>}
+            {state.touched.name && <span>{state.errors.name}</span>}
             <input placeholder="lastName" {...register('lastName')} />
             <input placeholder="Street" {...register('address.street')} />
             <input type="checkbox" {...register('bool', 'checkbox')} />
