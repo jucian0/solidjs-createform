@@ -63,7 +63,7 @@ export type Errors<Values> = {
  * createform hook needs an object that describe and provide some properties like initial values of form, initial errors of form, initial touched of form,
  * and needs know what kind of form, is Controlled, debounced is about that.
  */
-export type createformArgs<T> = {
+export type CreateFormArgs<T> = {
    /** represents a initial value of form */
    readonly initialValues?: T
    /** represents a initial values of inputs errors */

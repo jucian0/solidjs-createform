@@ -1,5 +1,5 @@
 import { createStore } from 'solid-js/store'
-import { createformArgs, Form } from './Types'
+import { CreateFormArgs, Form } from './Types'
 import * as Dot from './ObjectUtils'
 import { asyncValidate } from './Validate'
 
@@ -14,7 +14,7 @@ const defaultValues = {
  * @param args createformArgs type that contains the initial values of form, initial errors of form, initial touched of form,
  * @returns {function(*): *} a hook that can be used to manage the form state.
  **/
-export function createform<T extends createformArgs<T['initialValues']>>(
+export function createForm<T extends CreateFormArgs<T['initialValues']>>(
    args: T
 ): Form<T['initialValues']> {
    const initialState = { ...defaultValues, ...args }
@@ -39,6 +39,11 @@ export function createform<T extends createformArgs<T['initialValues']>>(
 
    const { values, errors, touched, isValid } = state
 
+   function handleChangeState(path: any, newState: Partial<typeof state>) {
+      validate(newState)
+      setState(path, newState)
+   }
+
    function register(name: string, type = 'text') {
       const value = Dot.get(values, name)
 
@@ -53,11 +58,10 @@ export function createform<T extends createformArgs<T['initialValues']>>(
          onInput: (e: any) => {
             const value = e.target.value
             const nextValues = Dot.set(values, name, value)
-            setState(`values`, nextValues)
-            validate(nextValues)
+            handleChangeState(`values`, nextValues)
          },
          onBlur: () => {
-            setState(`touched`, Dot.set(touched, name, true))
+            handleChangeState(`touched`, Dot.set(touched, name, true))
          },
          [inputValueType]: value,
          type
@@ -77,7 +81,6 @@ export function createform<T extends createformArgs<T['initialValues']>>(
    }
 
    function reset() {
-      console.log(restore.initialValues)
       setState(`values`, restore.initialValues)
    }
 
