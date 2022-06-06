@@ -1,4 +1,4 @@
-import { Component, createSignal } from 'solid-js'
+import { Component, createEffect, createSignal } from 'solid-js'
 import styles from './App.module.css'
 import { createForm } from '../../src'
 import * as yup from 'yup'
@@ -26,9 +26,13 @@ const form = createForm({
 })
 
 const App: Component = () => {
-   const { register, state, setFieldValue, reset, isValid } = form
+   const { register, state, setFieldValue, reset } = form
 
    const [test, setTest] = createSignal('')
+
+   createEffect(() => {
+      console.log(state.values.name, '<<<<<<<<<')
+   })
 
    return (
       <div class={styles.App}>
@@ -37,11 +41,10 @@ const App: Component = () => {
             {state.touched.name && <span>{state.errors.name}</span>}
             <input placeholder="lastName" {...register('lastName')} />
             <input placeholder="Street" {...register('address.street')} />
-            <input type="checkbox" {...register('bool', 'checkbox')} />
+            <input {...register('bool', 'checkbox')} />
             <input placeholder="City" {...register('address.city')} />
             <input placeholder="Range" {...register('distance', 'range')} />
             <input {...register('date', 'date')} />
-            <input value={new Date()} />
             <button
                onClick={() => setFieldValue('address.street', 'novo valor')}
             >

@@ -39,11 +39,6 @@ export function createForm<T extends CreateFormArgs<T['initialValues']>>(
 
    const { values, errors, touched, isValid } = state
 
-   function handleChangeState(path: any, newState: Partial<typeof state>) {
-      validate(newState)
-      setState(path, newState)
-   }
-
    function register(name: string, type = 'text') {
       const value = Dot.get(values, name)
 
@@ -57,11 +52,10 @@ export function createForm<T extends CreateFormArgs<T['initialValues']>>(
       return {
          onInput: (e: any) => {
             const value = e.target.value
-            const nextValues = Dot.set(values, name, value)
-            handleChangeState(`values`, nextValues)
+            setFieldValue(name, value)
          },
          onBlur: () => {
-            handleChangeState(`touched`, Dot.set(touched, name, true))
+            setFieldTouched(name)
          },
          [inputValueType]: value,
          type
