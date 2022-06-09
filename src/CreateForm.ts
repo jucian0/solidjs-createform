@@ -1,8 +1,7 @@
 import { createStore } from 'solid-js/store'
-import { CreateFormArgs, Form } from './Types'
+import { CreateFormArgs, Form, KeyOf } from './Types'
 import * as Dot from './ObjectUtils'
 import { asyncValidate } from './Validate'
-import { createSignal } from 'solid-js'
 
 const defaultValues = {
    initialValues: {},
@@ -17,7 +16,7 @@ const defaultValues = {
  **/
 export function createForm<T extends CreateFormArgs<T['initialValues']>>(
    args: T
-): Form<T['initialValues']> {
+) {
    const initialState = { ...defaultValues, ...args }
    const restore = Dot.clone(initialState)
 
@@ -27,21 +26,31 @@ export function createForm<T extends CreateFormArgs<T['initialValues']>>(
     * errors of form,
     * touched of form.
     **/
-   const [state, setState] = createStore({
+   const [form, setForm] = createStore({
       values: initialState.initialValues,
       errors: initialState.initialErrors,
       touched: initialState.initialTouched,
-      isValid: Dot.isEmpty(initialState.initialErrors)
+
+      setValue: (field: string, value: string) => {
+         const next = Dot.set(form.values, field, value)
+         setForm('values', next)
+      },
+      setError: (field: string, value: string) => {
+         const next = Dot.set(form.errors, field, value)
+         setForm('errors', next)
+      },
+      setTouched: (field: string, value: boolean) => {
+         const next = Dot.set(form.touched, field, value)
+         setForm('touched', next)
+      }
    })
 
    /**
     * This is the hook that can be used to manage the form state.
     **/
 
-   const { values, errors, touched, isValid } = state
-
    function register(name: string, type = 'text') {
-      const value = Dot.get(values, name)
+      const value = Dot.get(form.values, name)
 
       const inputValueType =
          type === 'checkbox'
@@ -53,72 +62,33 @@ export function createForm<T extends CreateFormArgs<T['initialValues']>>(
       return {
          onInput: (e: any) => {
             const value = e.target.value
-            setFieldValue(name, value)
-            validate(state.values)
+            form.setValue(name, value)
+            validate(form.values, name)
          },
          onBlur: () => {
-            setFieldTouched(name)
+            form.setTouched(name, true)
          },
          [inputValueType]: value,
          type
       }
    }
 
-   async function validate(values: T['initialValues']) {
+   async function validate(values: T['initialValues'], field: string) {
       try {
          await asyncValidate(values, initialState.validationSchema)
-         setState(`errors`, {})
-         setState(`isValid`, true)
+         form.setError(field, '')
       } catch (e) {
-         setState(`errors`, {
-            ...errors,
-            ...e
-         })
-         setState(`isValid`, false)
+         form.setError(field, Dot.get(e, field))
       }
-   }
-
-   function reset() {
-      setState(`values`, restore.initialValues)
-   }
-
-   function resetFieldValue(name: string) {
-      setState(
-         `values`,
-         Dot.set(values, name, Dot.get(restore.initialValues, name))
-      )
-   }
-
-   function setFieldValue(name: string, value: any) {
-      setState(`values`, Dot.set(values, name, value))
-   }
-
-   function resetFieldError(name: string) {
-      setState(`errors`, Dot.set(errors, name, undefined))
-   }
-
-   function setFieldError(name: string, error: any) {
-      setState(`errors`, Dot.set(errors, name, error))
-   }
-
-   function resetFieldTouched(name: string) {
-      setState(`touched`, Dot.set(touched, name, false))
-   }
-
-   function setFieldTouched(name: string) {
-      setState(`touched`, Dot.set(touched, name, true))
    }
 
    return {
       register,
-      state,
-      reset,
-      resetFieldValue,
-      setFieldValue,
-      resetFieldError,
-      setFieldError,
-      resetFieldTouched,
-      setFieldTouched,
-      isValid
+      setFieldValue: form.setValue,
+      setFIeldError: form.setError,
+      setFieldTouched: form.setTouched,
+      state: {
+         ...form
+      }
    }
 }

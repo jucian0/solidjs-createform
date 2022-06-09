@@ -4,6 +4,16 @@ type Input = {
    [key: string]: any
 }
 
+export type KeyOf<T> = number extends keyof T
+   ? 0 extends 1 & T
+      ? keyof T
+      : [T] extends [readonly unknown[]]
+      ? number
+      : [T] extends [never]
+      ? never
+      : keyof T
+   : keyof T
+
 export type InputType =
    | 'text'
    | 'checkbox'
