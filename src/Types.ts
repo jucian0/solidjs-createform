@@ -1,4 +1,6 @@
-type Input = {
+import { Schema } from 'yup'
+
+type InputProps = {
    onInput: (this: GlobalEventHandlers, ev: Event) => any
    onBlur: (this: GlobalEventHandlers, ev: FocusEvent) => any
    [key: string]: any
@@ -33,55 +35,24 @@ export type InputType =
    | 'range'
    | 'file'
 
-//Pick<HTMLInputElement, 'oninput' & 'onblur' & 'value'>
+export type InputField<T> =
+   | [string | number, Schema<T>]
+   | [string | number]
+   | string
+   | number
 
-/**
- * state is one of properties that is returned by createform hook, this object contains the current state of form when the form is controlled or debounced.
- */
-export type State<T> = {
-   values: T
-   errors: Errors<T>
-   touched: Touched<T>
-   isValid: boolean
+export type InputForm<T> = {
+   [key in keyof T]: InputField<T[key]> | InputForm<T[key]>
 }
 
-/**
- * Touched type represents a touched object that has all properties of a form values, when this properties is primitive type ww convert this in a boolean,
- *  otherwise if this an object we start again validating every properties.
- */
-export type Touched<Values> = {
-   [k in keyof Values]?: Values[k] extends number | string | boolean | Date
-      ? boolean
-      : Values[k] extends Array<any>
-      ? Touched<Values[k][number]>[]
-      : Touched<Values[k]>
-}
-
-/**
- * Errors type represents a errors object that has all properties of a form values, when this properties is primitive type ww convert this in a string,
- *  otherwise if this an object we start again validating every properties.
- */
-export type Errors<Values> = {
-   [k in keyof Values]?: Values[k] extends number | string | boolean | Date
-      ? string
-      : Values[k] extends Array<any>
-      ? Errors<Values[k][number]>[]
-      : Errors<Values[k]>
-}
-
-/**
- * createform hook needs an object that describe and provide some properties like initial values of form, initial errors of form, initial touched of form,
- * and needs know what kind of form, is Controlled, debounced is about that.
- */
-export type CreateFormArgs<T> = {
-   /** represents a initial value of form */
-   readonly initialValues?: T
-   /** represents a initial values of inputs errors */
-   readonly initialErrors?: Errors<T>
-   /** represents a initial values of visited inputs */
-   readonly initialTouched?: Touched<T>
-   /** validation schema provided by yup */
-   readonly validationSchema?: any //YupSchema<T>
+export type State<T extends {}> = {
+   [k in keyof T]: {
+      value: any
+      error: string
+      touched: boolean
+      pristine: boolean
+      schema?: Schema<string>
+   }
 }
 
 /**
@@ -97,7 +68,7 @@ export type Form<T> = {
    register: (
       name: string,
       type?: 'text' | 'radio' | 'select' | 'checkbox' | 'range' | 'date'
-   ) => Input
+   ) => InputProps
    /**
     * `state` is an object that contains the values of form, errors of form, touched of form.
     **/
@@ -142,4 +113,9 @@ export type Form<T> = {
     * `isValid` is a boolean that indicates if the form is valid.
     **/
    isValid: boolean
+   /**
+    * `handleSubmit` is a function that handles the submit of the form.
+    * @param onSubmit the function that is called when the form is submitted.
+    **/
+   handleSubmit: (onSubmit: (values: T) => void) => (event: Event) => void
 }

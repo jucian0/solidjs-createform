@@ -21,3 +21,12 @@ export function asyncValidate<TValues extends {}>(
          }, {})
       })
 }
+
+export function syncValidate(values: any, validationSchema: Schema<any>) {
+   try {
+      validationSchema?.validateSync(values, { abortEarly: false })[0]
+      return ''
+   } catch (e) {
+      return e.inner[0].message
+   }
+}
