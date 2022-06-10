@@ -8,14 +8,12 @@
 
 Createform is an open-source package to create forms for SolidJS applications. It's based on [useForm](https://useform.org)
 
-
-
 ## Motivation
 
-Since SolidJS is a new framework, there is no existing great package to create forms. I decided to create this package to simplify the process of creating forms. 
-
+Since SolidJS is a new framework, there is no existing great package to create forms. I decided to create this package to simplify the process of creating forms.
 
 ## How to use it
+
 To use `createform` you need to import it into your SolidJS application.
 
 ```js
@@ -26,18 +24,20 @@ Then you can create a form.
 
 ```js
 const form = createForm({
-  initialValues: {
-    name: '',
-    email: '',
-    password: '',
-  },
+  name: [''],
+  age: ['', yup.number().required()],
+  email: ['', yup.string().email()],
+  password: ['', yup.string().required()],
+  address: createForm({
+    street: ['', yup.string().required()],
+    city: ['', yup.string().required()]
+  })
 })
 ```
 
 Now you can use it everywhere in your SolidJS application.
 
 ```js
-
 function App() {
   const { register, handleSubmit, errors } = form
 
@@ -67,15 +67,19 @@ const form = createForm({
   initialValues: {
     name: '',
     email: '',
-    password: '',
+    password: ''
   },
   validationSchema: yup.object({
     name: yup.string().required('Name is required'),
     email: yup.string().email('Invalid email').required('Email is required'),
-    password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
-  }),
+    password: yup
+      .string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('Password is required')
+  })
 })
 ```
+
 # It's All.
 
 ## 🤝 Contributing
