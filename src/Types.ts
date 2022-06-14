@@ -1,20 +1,10 @@
 import { Schema } from 'yup'
 
-type InputProps = {
+type FieldRegisterProps = {
    onInput: (this: GlobalEventHandlers, ev: Event) => any
    onBlur: (this: GlobalEventHandlers, ev: FocusEvent) => any
    [key: string]: any
 }
-
-export type KeyOf<T> = number extends keyof T
-   ? 0 extends 1 & T
-      ? keyof T
-      : [T] extends [readonly unknown[]]
-      ? number
-      : [T] extends [never]
-      ? never
-      : keyof T
-   : keyof T
 
 export type InputType =
    | 'text'
@@ -35,24 +25,26 @@ export type InputType =
    | 'range'
    | 'file'
 
-export type InputField<T> =
+export type FormControl<T> =
    | [string | number, Schema<T>]
    | [string | number]
    | string
    | number
 
-export type InputForm<T> = {
-   [key in keyof T]: InputField<T[key]> | InputForm<T[key]>
+export type FormGroup<T> = {
+   [key in keyof T]: FormControl<T[key]> | FormGroup<T[key]>
+}
+
+export type FieldProps<T> = {
+   value: T
+   error?: string
+   touched: boolean
+   pristine: boolean
+   schema?: Schema<string>
 }
 
 export type State<T extends {}> = {
-   [k in keyof T]: {
-      value: any
-      error: string
-      touched: boolean
-      pristine: boolean
-      schema?: Schema<string>
-   }
+   [k in keyof T]: FieldProps<T>
 }
 
 /**
@@ -68,7 +60,7 @@ export type Form<T> = {
    register: (
       name: string,
       type?: 'text' | 'radio' | 'select' | 'checkbox' | 'range' | 'date'
-   ) => InputProps
+   ) => FieldRegisterProps
    /**
     * `state` is an object that contains the values of form, errors of form, touched of form.
     **/
@@ -81,38 +73,38 @@ export type Form<T> = {
     * `resetFieldValue` is a function that resets the value of a field.
     * @param name the name of the field.
     **/
-   resetFieldValue: (name: string) => void
+   resetValue: (name: string) => void
    /**
     * `setFieldValue` is a function that sets the value of a field.
     * @param name the name of the field.
     * @param value the value of the field.
     **/
-   setFieldValue: (name: string, value: any) => void
+   setValue: (name: string, value: any) => void
    /**
     * `resetFieldError` is a function that resets the error of a field.
     * @param name the name of the field.
     **/
-   resetFieldError: (name: string) => void
+   resetError: (name: string) => void
    /**
     * `setFieldError` is a function that sets the error of a field.
     * @param name the name of the field.
     * @param error the error of the field.
     **/
-   setFieldError: (name: string, error: any) => void
+   setError: (name: string, error: any) => void
    /**
     * `resetFieldTouched` is a function that resets the touched of a field.
     * @param name the name of the field.
     **/
-   resetFieldTouched: (name: string) => void
+   resetTouched: (name: string) => void
    /**
     * `setFieldTouched` is a function that sets the touched of a field.
     * @param name the name of the field.
     **/
-   setFieldTouched: (name: string, touched: boolean) => void
-   /**
-    * `isValid` is a boolean that indicates if the form is valid.
-    **/
-   isValid: boolean
+   setTouched: (name: string, touched: boolean) => void
+   //   /**
+   //    * `isValid` is a boolean that indicates if the form is valid.
+   //    **/
+   //   isValid: boolean
    /**
     * `handleSubmit` is a function that handles the submit of the form.
     * @param onSubmit the function that is called when the form is submitted.

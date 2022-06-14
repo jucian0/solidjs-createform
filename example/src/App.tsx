@@ -1,38 +1,50 @@
 import { Component, createEffect, createSignal } from 'solid-js'
 import styles from './App.module.css'
-import { createForm } from '../../src'
+import { createForm, evaluateForm } from '../../src'
 import * as yup from 'yup'
-
-const form = createForm({
-   name: [''],
-   age: ['', yup.number().required()],
-   email: ['', yup.string().email()],
-   password: ['', yup.string().required()],
-   address: createForm({
-      street: ['', yup.string().required()],
-      city: ['', yup.string().required()]
+const form = evaluateForm({
+   name: ['juciano', yup.string().required()],
+   age: ['35', yup.number().required()],
+   email: ['juciano@juciano.com', yup.string().email()],
+   password: ['123456', yup.string().required()],
+   address: evaluateForm({
+      street: ['verginio belgine', yup.string().required()],
+      city: ['itatiba', yup.string().required()],
+      another: evaluateForm({
+         another: ['', yup.string().required()]
+      })
    })
 })
 
 const App: Component = () => {
    //const { register, state, setFieldValue, reset } = form
+   // createEffect(() => {
+   //    console.log(form.form.name.value)
+   //    console.log(form.form.name.error)
+   // })
 
-   createEffect(() => {
-      console.log(form.form.name.value)
-      console.log(form.form.name.error)
-   })
+   console.log(form)
    return (
       <div class={styles.App}>
          <h1>Solid-JS</h1>
-         <form>
-            <div>
-               <label>Name</label>
-               <input {...form.register('name', 'text')} />
-               <button type="button" onClick={form.reset}>
-                  Reset
-               </button>
-            </div>
-         </form>
+         {/* <form onSubmit={form.handleSubmit(e => console.log(e))}>
+        <div>
+          <label>Name</label>
+          <input {...form.register('name', 'text')} />
+        </div>
+        <div>
+          <label>Age</label>
+          <input {...form.register('age', 'text')} />
+        </div>
+        <div>
+          <label>Email</label>
+          <input {...form.register('email', 'text')} />
+        </div>
+        <button type="submit">Submit</button>
+        <button type="button" onClick={form.reset}>
+          Reset
+        </button>
+      </form> */}
       </div>
    )
 }

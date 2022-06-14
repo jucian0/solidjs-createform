@@ -1,44 +1,51 @@
 import { createForm } from './CreateForm'
-import { InputForm, State } from './Types'
+import { FormGroup, State, FormGroup, FieldProps } from './Types'
 import { syncValidate } from './Validate'
 
 export function evaluateForm<T>(
-   form: InputForm<T> | typeof createForm,
-   next = {}
-): State<T> {
+   form: FormGroup<T> | typeof createForm,
+   initial = {}
+) {
    for (const key in form) {
       if (form[key] instanceof Array) {
-         if (form[key].length === 1) {
-            next[key] = {
-               value: form[key][0],
-               error: '',
-               touched: false,
-               schema: null,
-               pristine: true
-            }
-            return next as State<T>
-         }
+         initial[key] = evaluateInput(form[key])
+         console.log('AA', key)
+      } else if (!form[key].hasOwnProperty('value')) {
+         //initial[key] = evaluateForm(form[key], initial)
+         console.log('BB', key)
+         //initial[key] = evaluateInput(form[key])
 
-         next[key] = {
-            value: form[key][0],
-            error: syncValidate(form[key][0], form[key][1]),
-            schema: form[key][1],
-            pristine: true,
-            touched: false
-         }
-         return next as State<T>
-      } else if (form[key] instanceof Object) {
-         return evaluateForm(form[key], next)
+         console.log('BB', key, form[key])
       }
-      next[key] = {
-         value: form[key],
-         error: '',
-         touched: false,
-         pristine: true,
-         schema: null
-      }
-
-      return next as State<T>
    }
-   return next as State<T>
+   return initial
+}
+
+export function formGroup<T>(form: FormGroup<T>): State<T> {}
+
+function evaluateInput(input: FormGroup<any>): FieldProps<any> {
+   const baseProps = {
+      touched: false,
+      pristine: true,
+      value: input[0]
+   }
+
+   if (input instanceof Array) {
+      if (input.length === 1) {
+         return {
+            ...baseProps
+         }
+      }
+
+      return {
+         ...baseProps,
+         error: syncValidate(input[0], input[1]),
+         schema: input[1]
+      }
+   }
+
+   return {
+      ...baseProps,
+      value: input
+   }
 }
