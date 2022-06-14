@@ -1,4 +1,4 @@
-import { Schema } from 'yup'
+import { ArraySchema, NumberSchema, StringSchema } from 'yup'
 
 type FieldRegisterProps = {
    onInput: (this: GlobalEventHandlers, ev: Event) => any
@@ -25,14 +25,17 @@ export type InputType =
    | 'range'
    | 'file'
 
-export type FormControl<T> =
-   | [string | number, Schema<T>]
+export type FormControl =
+   | [
+        string | number,
+        StringSchema<string> | NumberSchema<number> | ArraySchema<any>
+     ]
    | [string | number]
    | string
    | number
 
 export type FormGroup<T> = {
-   [key in keyof T]: FormControl<T[key]> | FormGroup<T[key]>
+   [key in keyof T]: FormControl | FormGroup<T[key]>
 }
 
 export type FieldProps<T> = {
@@ -40,11 +43,14 @@ export type FieldProps<T> = {
    error?: string
    touched: boolean
    pristine: boolean
-   schema?: Schema<string>
+   schema?: StringSchema<string> | NumberSchema<number> | ArraySchema<any>
 }
 
-export type State<T extends {}> = {
-   [k in keyof T]: FieldProps<T>
+/**
+ * Should add recursive type support
+ */
+export type State<T> = {
+   [k in keyof T]: FieldProps<T[k] extends [] ? number : string>
 }
 
 /**

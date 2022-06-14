@@ -1,17 +1,17 @@
 import { Component, createEffect, createSignal } from 'solid-js'
 import styles from './App.module.css'
-import { createForm, evaluateForm } from '../../src'
+import { formGroup } from '../../src'
 import * as yup from 'yup'
-const form = evaluateForm({
+const form = formGroup({
    name: ['juciano', yup.string().required()],
    age: ['35', yup.number().required()],
    email: ['juciano@juciano.com', yup.string().email()],
    password: ['123456', yup.string().required()],
-   address: evaluateForm({
+   address: formGroup({
       street: ['verginio belgine', yup.string().required()],
       city: ['itatiba', yup.string().required()],
-      another: evaluateForm({
-         another: ['', yup.string().required()]
+      another: formGroup({
+         myAnother: ['another value', yup.string().required()]
       })
    })
 })
@@ -23,7 +23,7 @@ const App: Component = () => {
    //    console.log(form.form.name.error)
    // })
 
-   console.log(form)
+   console.log(form.age.value)
    return (
       <div class={styles.App}>
          <h1>Solid-JS</h1>
