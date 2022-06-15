@@ -2,9 +2,11 @@ import { Component, createEffect, createSignal } from 'solid-js'
 import styles from './App.module.css'
 import { formGroup } from '../../src'
 import * as yup from 'yup'
+import { State } from '../../src/Types'
 const form = formGroup({
+   tet: ['', yup.string().required()],
    name: ['juciano', yup.string().required()],
-   age: ['35', yup.number().required()],
+   age: [30, yup.number().required()],
    email: ['juciano@juciano.com', yup.string().email()],
    password: ['123456', yup.string().required()],
    address: formGroup({

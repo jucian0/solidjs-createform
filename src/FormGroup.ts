@@ -1,15 +1,15 @@
 import { formControl } from './FormControl'
-import { FormControl, FormGroup, State } from './Types'
+import { FormGroup, State } from './Types'
 
-export function formGroup<T>(
+export function formGroup<T extends FormGroup<T>>(
    form: FormGroup<T>,
    state = Object.assign(form)
 ): State<T> {
    for (const key in form) {
       if (form[key] instanceof Array) {
-         state[key] = formControl(form[key] as FormControl)
-      } else if (!form[key].hasOwnProperty('value')) {
-         state[key] = formGroup(form[key] as FormGroup<T>, state[key])
+         state[key] = formControl<T>(form[key] as any)
+      } else if (!(form[key] as any).hasOwnProperty('value')) {
+         state[key] = formGroup(form[key], state[key])
       }
    }
    return state as State<T>
