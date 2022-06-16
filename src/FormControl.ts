@@ -24,6 +24,6 @@ export function formControl<T>(control: FormControl<T>): FieldProps<T> {
 
    return {
       ...baseProps,
-      value: control
+      value: control as T
    }
 }

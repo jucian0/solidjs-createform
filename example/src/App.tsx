@@ -3,8 +3,22 @@ import styles from './App.module.css'
 import { formGroup } from '../../src'
 import * as yup from 'yup'
 import { State } from '../../src/Types'
+
+type UserForm = {
+   name: string
+   email: string
+   password: string
+   age: number
+   address: {
+      street: string
+      city: string
+      another: {
+         myAnother: string
+      }
+   }
+}
+
 const form = formGroup({
-   tet: ['', yup.string().required()],
    name: ['juciano', yup.string().required()],
    age: [30, yup.number().required()],
    email: ['juciano@juciano.com', yup.string().email()],
@@ -25,7 +39,7 @@ const App: Component = () => {
    //    console.log(form.form.name.error)
    // })
 
-   console.log(form.age.value)
+   console.log(form.name.pristine)
    return (
       <div class={styles.App}>
          <h1>Solid-JS</h1>

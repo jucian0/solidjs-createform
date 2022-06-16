@@ -1,4 +1,5 @@
 import { ArraySchema, NumberSchema, Schema, StringSchema } from 'yup'
+import { formGroup } from './FormGroup'
 
 type FieldRegisterProps = {
    onInput: (this: GlobalEventHandlers, ev: Event) => any
@@ -28,7 +29,9 @@ export type InputType =
 export type FormControl<T> = T extends [infer U, infer V] ? [U, V] : T
 
 export type FormGroup<T> = {
-   [k in keyof T]: T[k] extends {} ? FormGroup<T[k]> : FormControl<T[k]>
+   [k in keyof T]: T[k] extends string | number
+      ? [string | number | boolean, any]
+      : ReturnType<typeof formGroup>
 }
 
 export type FieldProps<T> = {

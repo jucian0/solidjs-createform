@@ -1,7 +1,7 @@
 import { formControl } from './FormControl'
 import { FormGroup, State } from './Types'
 
-export function formGroup<T extends FormGroup<T>>(
+export function formGroup<T>(
    form: FormGroup<T>,
    state = Object.assign(form)
 ): State<T> {
@@ -9,7 +9,7 @@ export function formGroup<T extends FormGroup<T>>(
       if (form[key] instanceof Array) {
          state[key] = formControl<T>(form[key] as any)
       } else if (!(form[key] as any).hasOwnProperty('value')) {
-         state[key] = formGroup(form[key], state[key])
+         state[key] = formGroup(form[key] as any, state[key])
       }
    }
    return state as State<T>
