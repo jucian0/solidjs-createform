@@ -1,7 +1,6 @@
-import { FieldProps, FormControl } from './Types'
 import { syncValidate } from './Validate'
 
-export function formControl<T>(control: FormControl<T>): FieldProps<T> {
+export function formControl<T>(control: any): any {
    const baseProps = {
       touched: false,
       pristine: true,

@@ -7,7 +7,7 @@ export function formGroup(form: any): any {
       for (const key in partial) {
          if (partial[key] instanceof Array) {
             partial[key] = formControl(partial[key])
-         } else if (!(partial[key] as any).hasOwnProperty('value')) {
+         } else if (!partial[key].hasOwnProperty('value')) {
             partial[key] = evaluate(partial[key])
          }
       }
