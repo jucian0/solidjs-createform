@@ -39,7 +39,7 @@ const App: Component = () => {
    //    console.log(form.form.name.error)
    // })
 
-   console.log(form.name.pristine)
+   console.log(form)
    return (
       <div class={styles.App}>
          <h1>Solid-JS</h1>

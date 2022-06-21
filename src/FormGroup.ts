@@ -1,16 +1,18 @@
 import { formControl } from './FormControl'
-import { FormGroup, State } from './Types'
 
-export function formGroup<T>(
-   form: FormGroup<T>,
-   state = Object.assign(form)
-): State<T> {
-   for (const key in form) {
-      if (form[key] instanceof Array) {
-         state[key] = formControl<T>(form[key] as any)
-      } else if (!(form[key] as any).hasOwnProperty('value')) {
-         state[key] = formGroup(form[key] as any, state[key])
+export function formGroup(form: any): any {
+   const state = Object.assign(form, {})
+
+   function evaluate(partial: any) {
+      for (const key in partial) {
+         if (partial[key] instanceof Array) {
+            partial[key] = formControl(partial[key])
+         } else if (!(partial[key] as any).hasOwnProperty('value')) {
+            partial[key] = evaluate(partial[key])
+         }
       }
+      return partial
    }
-   return state as State<T>
+
+   return evaluate(state)
 }
