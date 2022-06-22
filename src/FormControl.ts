@@ -1,6 +1,7 @@
+import { FormControl } from './Types'
 import { syncValidate } from './Validate'
 
-export function formControl<T>(control: any): any {
+export const formControl: FormControl = control => {
    const baseProps = {
       touched: false,
       pristine: true,
@@ -23,6 +24,6 @@ export function formControl<T>(control: any): any {
 
    return {
       ...baseProps,
-      value: control as T
+      value: control
    }
 }

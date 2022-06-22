@@ -1,6 +1,7 @@
 import { formControl } from './FormControl'
+import { FormGroup } from './Types'
 
-export function formGroup(form: any): any {
+export const formGroup: FormGroup = form => {
    const state = Object.assign(form, {})
 
    function evaluate(partial: any) {
