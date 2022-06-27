@@ -14,8 +14,6 @@ type FormGroupReturn<T> = {
       : FormGroupReturn<T[k]>
 }
 
-type Form<T> = {}
-
 export type Group<T> = {
    [k in keyof T]: T[k] extends Control<any> ? Control<T[k][0]> : Group<T[k]>
 }
@@ -25,7 +23,3 @@ export type FormControl = <T extends Control<T>>(
 ) => FormControlReturn<T>
 
 export type FormGroup = <T extends Group<T>>(group: T) => FormGroupReturn<T>
-
-export type FormBuilder = <T extends FormGroupReturn<T>>(
-   protoForm: T
-) => Form<T>
