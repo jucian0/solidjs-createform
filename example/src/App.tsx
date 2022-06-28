@@ -32,19 +32,19 @@ const protoForm = formGroup({
    })
 })
 
-const form = createForm(group => ({
+const form = createForm({
    name: ['juciano'],
    age: [30, yup.number().required()],
    email: ['juciano@juciano.com', yup.string().email()],
    password: ['123456', yup.string().required()],
-   address: group({
+   address: {
       street: ['verginio belgine', yup.string().required()],
       city: ['itatiba', yup.string().required()],
-      another: group({
+      another: {
          myAnother: ['another value', yup.string().required()]
-      })
-   })
-}))
+      }
+   }
+})
 
 const App: Component = () => {
    //const { register, state, setFieldValue, reset } = form
@@ -53,8 +53,8 @@ const App: Component = () => {
    //    console.log(form.form.name.error)
    // })
 
-   console.log(protoForm.address.another.myAnother.value)
-   console.log(protoForm.age.value)
+   console.log(form)
+
    return (
       <div class={styles.App}>
          <h1>Solid-JS</h1>

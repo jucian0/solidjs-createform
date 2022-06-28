@@ -1,18 +1,15 @@
+import { createStore } from 'solid-js/store'
 import { formGroup } from './FormGroup'
-import { FormGroup } from './Types'
+import { Group } from './Types'
+import { nameToPath } from './Utils'
 
-type Form<T> = {
-   state: T
-}
+export function createForm<T extends Group<T>>(protoform: T) {
+   const [form, set] = createStore(formGroup(protoform))
 
-type Former = (group: FormGroup) => ReturnType<FormGroup>
-
-type CreateForm = <T>(former: Former) => Form<T>
-
-export const createForm: CreateForm = former => {
-   const protoForm = former(formGroup)
-
-   return {
-      state: protoForm
+   function setValue(name: string, value: any) {
+      const path = nameToPath(name)
+      set(...path, value)
    }
+
+   return form
 }
