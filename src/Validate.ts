@@ -1,9 +1,9 @@
 import { Schema, ValidationError } from 'yup'
 
-export function syncValidation<T>(values: T, validationSchema: Schema<T>) {
+export function syncValidation<T>(values: T, validationSchema?: Schema<T>) {
    try {
-      validationSchema.validateSync(values, { abortEarly: true })
-      return true
+      validationSchema?.validateSync(values, { abortEarly: true })
+      return {}
    } catch (err) {
       return err.inner
    }
