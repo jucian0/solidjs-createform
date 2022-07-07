@@ -14,7 +14,7 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T) {
    function onInputHandle(e: any) {
       const path = nameToPath(e.target.name)
       const value = parseInputValue(e)
-      setValues(...path, value)
+      setValues<any>(...path, value)
    }
 
    function onBlurHandle(e: any) {
