@@ -1,6 +1,7 @@
 import { createStore } from 'solid-js/store'
 import { nameToPath } from './NameToPath'
 import { parseInputValue } from './ParseInputValue'
+import { createInitialTouched } from './CreateInitialTouched'
 import { ProtoForm } from './Types'
 import { syncValidation } from './Validate'
 
@@ -10,6 +11,9 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T) {
       syncValidation(initialValues, validationSchema)
    )
    const [values, setValues] = createStore(initialValues)
+   const [touched, setTouched] = createStore(
+      createInitialTouched(structuredClone(initialValues))
+   )
 
    function _onInputHandle(e: any) {
       const path = nameToPath(e.target.name)
@@ -19,7 +23,8 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T) {
 
    function _onBlurHandle(e: any) {
       const path = nameToPath(e.target.name)
-      setErrors(...path, true)
+      setErrors(...path, 'any error')
+      setTouched<any>(...path, true)
    }
 
    function register(name: string, type: string) {
@@ -34,6 +39,10 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T) {
    return {
       values,
       errors,
-      register
+      register,
+      setValues,
+      setErrors,
+      setTouched,
+      touched
    }
 }
