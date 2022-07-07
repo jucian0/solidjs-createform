@@ -1,5 +1,6 @@
 import { createStore } from 'solid-js/store'
 import { nameToPath } from './NameToPath'
+import { parseInputValue } from './ParseInputValue'
 import { ProtoForm } from './Types'
 import { syncValidation } from './Validate'
 
