@@ -11,21 +11,21 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T) {
    )
    const [values, setValues] = createStore(initialValues)
 
-   function onInputHandle(e: any) {
+   function _onInputHandle(e: any) {
       const path = nameToPath(e.target.name)
       const value = parseInputValue(e)
       setValues<any>(...path, value)
    }
 
-   function onBlurHandle(e: any) {
+   function _onBlurHandle(e: any) {
       const path = nameToPath(e.target.name)
       setErrors(...path, true)
    }
 
    function register(name: string, type: string) {
       return {
-         onInput: onInputHandle,
-         onBlur: onBlurHandle,
+         onInput: _onInputHandle,
+         onBlur: _onBlurHandle,
          name,
          type
       }
