@@ -5,19 +5,31 @@ import { createForm } from './../../src'
 const form = createForm({
    initialValues: {
       name: 'juciano barbosa',
-      email: 'juciano@juciano.com'
-   }
+      email: 'juciano@juciano.com',
+      address: {
+         street: '',
+         number: null
+      }
+   },
+   validationSchema: yup.object({
+      name: yup.string().min(6),
+      email: yup.string().email().required()
+   })
 })
 
 const App: Component = () => {
    const { register } = form
 
    createEffect(() => {
-      console.log(form.values.name)
+      //console.log(form.values.name)
    })
 
    createEffect(() => {
-      console.log(form.touched.name)
+      // console.log(form.touched.name)
+   })
+
+   createEffect(() => {
+      console.log(form.errors.name)
    })
 
    return (
@@ -26,6 +38,22 @@ const App: Component = () => {
          <form>
             <input {...register('name', 'text')} />
             <input {...register('email', 'text')} />
+
+            <button
+               type="button"
+               onClick={() => form.setValues('name', 'Antonio Barbosa')}
+            >
+               set Name
+            </button>
+
+            <button
+               type="button"
+               onClick={() =>
+                  form.setValues('address', 'street', 'Verginio Belgine')
+               }
+            >
+               set Street
+            </button>
          </form>
       </div>
    )

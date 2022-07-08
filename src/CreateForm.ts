@@ -3,15 +3,16 @@ import { nameToPath } from './NameToPath'
 import { parseInputValue } from './ParseInputValue'
 import { createInitialTouched } from './CreateInitialTouched'
 import { ProtoForm } from './Types'
-import { syncValidation } from './Validate'
+import { asyncValidation } from './Validate'
 import { get } from './ObjectUtils'
+import { createInitialErrors } from './CreateInitialErrors'
 
 export function createForm<T extends ProtoForm<T['initialValues']>>(
    protoForm: T
 ) {
    const { validationSchema, initialValues } = protoForm
    const [errors, setErrors] = createStore(
-      syncValidation(initialValues, validationSchema)
+      createInitialErrors(structuredClone(initialValues))
    )
    const [values, setValues] = createStore(initialValues)
    const [touched, setTouched] = createStore(
@@ -22,6 +23,9 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       const path = nameToPath(e.target.name)
       const value = parseInputValue(e)
       setValues<any>(...path, value as any)
+      asyncValidation(values, validationSchema)
+         .then(resp => setErrors(...path, resp))
+         .catch(err => setErrors(...path, err))
    }
 
    function _onBlurHandle(e: any) {
