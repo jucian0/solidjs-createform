@@ -1,4 +1,4 @@
-import { Component } from 'solid-js'
+import { Component, createEffect } from 'solid-js'
 import styles from './App.module.css'
 import * as yup from 'yup'
 import { createForm } from './../../src'
@@ -11,7 +11,15 @@ const form = createForm({
 
 const App: Component = () => {
    const { register } = form
-   console.log(form)
+
+   createEffect(() => {
+      console.log(form.values.name)
+   })
+
+   createEffect(() => {
+      console.log(form.touched.name)
+   })
+
    return (
       <div class={styles.App}>
          <h1>Solid-JS</h1>

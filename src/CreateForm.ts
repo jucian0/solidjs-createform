@@ -4,8 +4,11 @@ import { parseInputValue } from './ParseInputValue'
 import { createInitialTouched } from './CreateInitialTouched'
 import { ProtoForm } from './Types'
 import { syncValidation } from './Validate'
+import { get } from './ObjectUtils'
 
-export function createForm<T extends ProtoForm<T>>(protoForm: T) {
+export function createForm<T extends ProtoForm<T['initialValues']>>(
+   protoForm: T
+) {
    const { validationSchema, initialValues } = protoForm
    const [errors, setErrors] = createStore(
       syncValidation(initialValues, validationSchema)
@@ -18,7 +21,7 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T) {
    function _onInputHandle(e: any) {
       const path = nameToPath(e.target.name)
       const value = parseInputValue(e)
-      setValues<any>(...path, value)
+      setValues<any>(...path, value as any)
    }
 
    function _onBlurHandle(e: any) {
@@ -28,11 +31,13 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T) {
    }
 
    function register(name: string, type: string) {
+      const value = get(values, name)
       return {
          onInput: _onInputHandle,
          onBlur: _onBlurHandle,
          name,
-         type
+         type,
+         value
       }
    }
 
