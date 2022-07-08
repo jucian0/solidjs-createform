@@ -1,10 +1,13 @@
 export function createInitialTouched<T extends {}>(values: T) {
-   for (let key in values) {
-      if (typeof values[key] === 'object') {
-         values[key] = createInitialTouched(values[key])
+   function evaluate(partial: any) {
+      for (const key in partial) {
+         if (typeof partial[key] === 'object') {
+            partial[key] = evaluate(partial[key])
+            console.log(partial[key])
+         }
+         partial[key] = false
       }
-      values[key] = false
+      return partial
    }
-
-   return values
+   return evaluate(values)
 }

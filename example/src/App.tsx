@@ -4,8 +4,8 @@ import * as yup from 'yup'
 import { createForm } from './../../src'
 const form = createForm({
    initialValues: {
-      name: 'juciano barbosa',
-      email: 'juciano@juciano.com',
+      name: '',
+      email: '',
       address: {
          street: '',
          number: null
@@ -13,24 +13,27 @@ const form = createForm({
    },
    validationSchema: yup.object({
       name: yup.string().min(6),
-      email: yup.string().email().required()
+      email: yup.string().email().required(),
+      address: yup.object({
+         street: yup.string().required()
+      })
    })
 })
 
 const App: Component = () => {
    const { register } = form
 
-   createEffect(() => {
-      //console.log(form.values.name)
-   })
+   //   createEffect(() => {
+   //     //console.log(form.values.name)
+   //   })
 
-   createEffect(() => {
-      // console.log(form.touched.name)
-   })
+   //   createEffect(() => {
+   //     console.log(form.touched.address.street)
+   //   })
 
-   createEffect(() => {
-      console.log(form.errors.name)
-   })
+   //   createEffect(() => {
+   //     console.log(form.errors)
+   //   })
 
    return (
       <div class={styles.App}>
@@ -38,6 +41,7 @@ const App: Component = () => {
          <form>
             <input {...register('name', 'text')} />
             <input {...register('email', 'text')} />
+            <input {...register('address.street', 'text')} />
 
             <button
                type="button"

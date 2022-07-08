@@ -3,9 +3,10 @@ import { nameToPath } from './NameToPath'
 import { parseInputValue } from './ParseInputValue'
 import { createInitialTouched } from './CreateInitialTouched'
 import { ProtoForm } from './Types'
-import { asyncValidation } from './Validate'
+import { asyncValidation, syncValidation } from './Validate'
 import { get } from './ObjectUtils'
 import { createInitialErrors } from './CreateInitialErrors'
+import { createEffect } from 'solid-js'
 
 export function createForm<T extends ProtoForm<T['initialValues']>>(
    protoForm: T
@@ -18,6 +19,14 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
    const [touched, setTouched] = createStore(
       createInitialTouched(structuredClone(initialValues))
    )
+
+   function _onInit() {
+      const _errors = syncValidation(values, validationSchema)
+      _errors.forEach(err => {
+         const path = nameToPath(err.path)
+         setErrors(...path, err.message)
+      })
+   }
 
    function _onInputHandle(e: any) {
       const path = nameToPath(e.target.name)
@@ -44,6 +53,8 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
          value
       }
    }
+
+   //createEffect(() => _onInit())
 
    return {
       values,
