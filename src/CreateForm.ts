@@ -1,12 +1,10 @@
 import { createStore } from 'solid-js/store'
-import { nameToPath } from './NameToPath'
 import { parseInputValue } from './ParseInputValue'
 import { createInitialTouched } from './CreateInitialTouched'
 import { ProtoForm } from './Types'
 import { asyncValidation, syncValidation } from './Validate'
-import { get } from './ObjectUtils'
+import { get, nameToPath } from './ObjectUtils'
 import { createInitialErrors } from './CreateInitialErrors'
-import { createEffect } from 'solid-js'
 
 export function createForm<T extends ProtoForm<T['initialValues']>>(
    protoForm: T

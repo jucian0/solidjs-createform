@@ -1,5 +1,13 @@
+import { Part } from 'solid-js/store'
+
 function propToPath(prop: any) {
    return prop.replace(/["|']|\]/g, '').split(/\.|\[/)
+}
+
+export function nameToPath<T>(name: string) {
+   const path = name.split('.') as [Part<T>]
+
+   return path
 }
 
 export function get<T extends {}>(defaultObject: T, prop: string) {
