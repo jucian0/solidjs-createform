@@ -18,9 +18,7 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       createInitialTouched(structuredClone(initialValues))
    )
 
-   _validate()
-
-   function _validate() {
+   const _validate = () => {
       const _errors = syncValidation(valuesState, validationSchema)
       _errors.forEach(err => {
          const path = nameToPath(err.path)
@@ -28,7 +26,7 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       })
    }
 
-   function _onInputHandle(e: any) {
+   const _onInputHandle = (e: any) => {
       const path = nameToPath(e.target.name)
       const value = parseInputValue(e)
       setValuesState<any>(...path, value as any)
@@ -37,7 +35,7 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
          .catch(err => setErrorsState(...path, err))
    }
 
-   function _onBlurHandle(e: any) {
+   const _onBlurHandle = (e: any) => {
       const path = nameToPath(e.target.name)
       setErrorsState(...path, 'any error')
       setTouchedState<any>(...path, true)
@@ -60,7 +58,7 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       _validate()
    }
 
-   function register(name: string, type: string) {
+   const register = (name: string, type: string) => {
       const value = get(valuesState, name)
       return {
          onInput: _onInputHandle,
@@ -71,7 +69,7 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       }
    }
 
-   //createEffect(() => _onInit())
+   _validate()
 
    return {
       values: valuesState,

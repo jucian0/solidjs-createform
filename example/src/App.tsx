@@ -65,11 +65,7 @@ const App: Component = () => {
             <button
                type="button"
                onClick={() =>
-                  form.setValues({
-                     name: 'Andre',
-                     email: 'andre@andre.com',
-                     address: { street: 'Virginio', number: 23 }
-                  })
+                  form.setValues('address', { street: 'Virginio', number: 23 })
                }
             >
                set All
