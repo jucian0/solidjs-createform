@@ -2,31 +2,6 @@ function propToPath(prop: any) {
    return prop.replace(/["|']|\]/g, '').split(/\.|\[/)
 }
 
-export function set<T extends { [k: string]: any }>(
-   defaultObject: T,
-   prop: string,
-   value: any
-) {
-   const paths = propToPath(prop)
-
-   function setPropertyValue(object: Partial<T> = {}, index: number) {
-      let clone: any = Object.assign({}, object)
-
-      if (paths.length > index) {
-         if (Array.isArray(object)) {
-            paths[index] = parseInt(paths[index])
-            clone = object.slice() as any
-         }
-         clone[paths[index]] = setPropertyValue(object[paths[index]], index + 1)
-
-         return clone
-      }
-      return value
-   }
-
-   return setPropertyValue(defaultObject, 0)
-}
-
 export function get<T extends {}>(defaultObject: T, prop: string) {
    const paths: Array<string> = propToPath(prop)
 
@@ -52,11 +27,28 @@ export function get<T extends {}>(defaultObject: T, prop: string) {
    return getPropertyValue(defaultObject, 0)
 }
 
-export function isEmpty(obj: any) {
+export function isEmpty<T extends {}>(obj: T) {
    for (const key in obj) {
       if (Object.hasOwnProperty.call(obj, key)) {
          return false
       }
    }
    return true
+}
+
+export function replacePrimitivesInObject<T extends {}>(
+   values: T,
+   nextValue: any
+) {
+   function evaluate<T>(partial: T) {
+      for (const key in partial) {
+         if (typeof partial[key] === 'object' && partial[key]) {
+            partial[key] = evaluate(partial[key])
+         } else {
+            partial[key] = nextValue
+         }
+      }
+      return partial
+   }
+   return evaluate(values)
 }
