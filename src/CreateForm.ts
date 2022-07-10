@@ -5,6 +5,7 @@ import { ProtoForm } from './Types'
 import { asyncValidation, syncValidation } from './Validate'
 import { get, nameToPath } from './ObjectUtils'
 import { createInitialErrors } from './CreateInitialErrors'
+import { createEffect, from, observable } from 'solid-js'
 
 export function createForm<T extends ProtoForm<T['initialValues']>>(
    protoForm: T
@@ -17,6 +18,8 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
    const [touchedState, setTouchedState] = createStore(
       createInitialTouched(structuredClone(initialValues))
    )
+
+   const obsv$ = from(state => {})
 
    const _validate = () => {
       const _errors = syncValidation(valuesState, validationSchema)
@@ -37,26 +40,27 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
 
    const _onBlurHandle = (e: any) => {
       const path = nameToPath(e.target.name)
-      setErrorsState(...path, 'any error')
       setTouchedState<any>(...path, true)
    }
 
    const setValues: SetStoreFunction<T['initialValues']> = (...args: any[]) => {
       setValuesState(...(args as [Part<T>]))
-      _validate()
    }
 
    const setErrors: SetStoreFunction<T['initialValues']> = (...args: any[]) => {
       setErrorsState(...(args as [Part<T>]))
-      _validate()
    }
 
    const setTouched: SetStoreFunction<T['initialValues']> = (
       ...args: any[]
    ) => {
       setTouchedState(...(args as [Part<T>]))
-      _validate()
    }
+
+   //   createEffect(() => {
+   //     const data = valuesState
+   //     _validate()
+   //   })
 
    const register = (name: string, type: string) => {
       const value = get(valuesState, name)
