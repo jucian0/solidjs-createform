@@ -3,39 +3,33 @@ import { parseInputValue } from './ParseInputValue'
 import { createInitialTouched } from './CreateInitialTouched'
 import { ProtoForm } from './Types'
 import { asyncValidation, syncValidation } from './Validate'
-import { get, nameToPath } from './ObjectUtils'
+import { clone, get, nameToPath, set } from './ObjectUtils'
 import { createInitialErrors } from './CreateInitialErrors'
-import { createEffect, from, observable } from 'solid-js'
 
 export function createForm<T extends ProtoForm<T['initialValues']>>(
    protoForm: T
 ) {
    const { validationSchema, initialValues } = protoForm
-   const [errorsState, setErrorsState] = createStore(
-      createInitialErrors(structuredClone(initialValues))
-   )
-   const [valuesState, setValuesState] = createStore(initialValues)
-   const [touchedState, setTouchedState] = createStore(
-      createInitialTouched(structuredClone(initialValues))
-   )
+   const initialErrors = createInitialErrors(initialValues)
+   const initialTouched = createInitialTouched(initialValues)
 
-   const obsv$ = from(state => {})
+   const [errorsState, setErrorsState] = createStore(clone(initialErrors))
+   const [touchedState, setTouchedState] = createStore(clone(initialTouched))
+   const [valuesState, setValuesState] = createStore(clone(initialValues))
 
-   const _validate = () => {
-      const _errors = syncValidation(valuesState, validationSchema)
-      _errors.forEach(err => {
-         const path = nameToPath(err.path)
-         setErrorsState(...path, err.message)
-      })
+   const _validate = (values: T['initialValues']) => {
+      const _errors = syncValidation(values, validationSchema, initialErrors)
+      setErrorsState(_errors)
    }
 
+   _validate(initialValues)
+
    const _onInputHandle = (e: any) => {
-      const path = nameToPath(e.target.name)
       const value = parseInputValue(e)
-      setValuesState<any>(...path, value as any)
-      asyncValidation(valuesState, validationSchema)
-         .then(resp => setErrorsState(...path, resp))
-         .catch(err => setErrorsState(...path, err))
+      const next = set(valuesState, e.target.name, value)
+      setValuesState(next)
+
+      _validate(next)
    }
 
    const _onBlurHandle = (e: any) => {
@@ -43,8 +37,17 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       setTouchedState<any>(...path, true)
    }
 
-   const setValues: SetStoreFunction<T['initialValues']> = (...args: any[]) => {
-      setValuesState(...(args as [Part<T>]))
+   const setValues = (
+      pathOrValue: string | T['initialValues'],
+      partial?: any
+   ) => {
+      if (typeof pathOrValue === 'string') {
+         const next = set(valuesState, pathOrValue, partial)
+         _validate(next)
+         return setValuesState(next)
+      }
+      _validate(pathOrValue)
+      return setValuesState(pathOrValue)
    }
 
    const setErrors: SetStoreFunction<T['initialValues']> = (...args: any[]) => {
@@ -57,11 +60,6 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       setTouchedState(...(args as [Part<T>]))
    }
 
-   //   createEffect(() => {
-   //     const data = valuesState
-   //     _validate()
-   //   })
-
    const register = (name: string, type: string) => {
       const value = get(valuesState, name)
       return {
@@ -73,7 +71,13 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       }
    }
 
-   _validate()
+   const handleSubmit = (callbackFn: (values: T['initialValues']) => void) => {
+      return (event: any) => {
+         event.preventDefault()
+         _validate(valuesState)
+         callbackFn(valuesState)
+      }
+   }
 
    return {
       values: valuesState,
@@ -82,6 +86,7 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       register,
       setValues,
       setErrors,
-      setTouched
+      setTouched,
+      handleSubmit
    }
 }

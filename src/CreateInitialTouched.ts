@@ -1,5 +1,5 @@
-import { replacePrimitivesInObject } from './ObjectUtils'
+import { clone, replacePrimitivesInObject } from './ObjectUtils'
 
 export function createInitialTouched<T extends {}>(values: T) {
-   return replacePrimitivesInObject(values, false)
+   return replacePrimitivesInObject(clone(values), false)
 }

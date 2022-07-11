@@ -60,3 +60,32 @@ export function replacePrimitivesInObject<T extends {}>(
    }
    return evaluate(values)
 }
+
+export function set<T extends { [k: string]: any }>(
+   defaultObject: T,
+   prop: string,
+   value: any
+) {
+   const paths = propToPath(prop)
+
+   function setPropertyValue(object: Partial<T> = {}, index: number) {
+      let clone: any = Object.assign({}, object)
+
+      if (paths.length > index) {
+         if (Array.isArray(object)) {
+            paths[index] = parseInt(paths[index])
+            clone = object.slice() as any
+         }
+         clone[paths[index]] = setPropertyValue(object[paths[index]], index + 1)
+
+         return clone
+      }
+      return value
+   }
+
+   return setPropertyValue(defaultObject, 0)
+}
+
+export function clone<T>(obj: T) {
+   return structuredClone(obj)
+}
