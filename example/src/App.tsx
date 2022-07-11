@@ -79,6 +79,13 @@ const App: Component = () => {
             >
                set All
             </button>
+
+            <button
+               type="button"
+               onClick={form.handleSubmit(values => console.log(values))}
+            >
+               Submit
+            </button>
          </form>
       </div>
    )
