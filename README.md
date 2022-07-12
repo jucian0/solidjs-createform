@@ -10,7 +10,14 @@ Createform is an open-source package to create forms for SolidJS applications. I
 
 ## Motivation
 
-Since SolidJS is a new framework, there is no existing great package to create forms. I decided to create this package to simplify the process of creating forms.
+Since SolidJS is a new framework, there is no existing great package to create forms. I decided to create this package to simplify the process of creating forms. Createform supports the following features:
+
+- Creates form with fields
+- Creates form with validation
+- Supports custom fields
+- Update touched state of form fields independently or all together
+- Update values state of form fields independently or all together
+- Update errors state of form fields independently or all together
 
 ## How to use it
 
@@ -24,14 +31,11 @@ Then you can create a form.
 
 ```js
 const form = createForm({
-  name: [''],
-  age: ['', yup.number().required()],
-  email: ['', yup.string().email()],
-  password: ['', yup.string().required()],
-  address: createForm({
-    street: ['', yup.string().required()],
-    city: ['', yup.string().required()]
-  })
+  initialValues: {
+    name: '',
+    email: '',
+    password: ''
+  }
 })
 ```
 
@@ -48,9 +52,9 @@ function App() {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" {...register('name')} />
-        <input type="email" {...register('email')} />
-        <input type="password" {...register('password')} />
+        <input {...register('name', 'text')} />
+        <input {...register('email', 'email')} />
+        <input {...register('password', 'password')} />
         <button type="submit">Submit</button>
       </form>
     </div>
@@ -79,20 +83,3 @@ const form = createForm({
   })
 })
 ```
-
-# It's All.
-
-## 🤝 Contributing
-
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/use-form/use-form/issues). You can also take a look at the [contributing guide](https://github.com/Jucian0/use-form/blob/main/CONTRIBUTING.md).
-
-## Show your support
-
-Give a ⭐️ if this project helped you!
-
-[![Stargazers repo roster for @use-form/use-form](https://reporoster.com/stars/use-form/use-form)](https://github.com/jucian0/useform/stargazers)
-
-## 📝 License
-
-Copyright © 2021 [createform](https://github.com/jucian0).<br />
-This project is [MIT](https://github.com/use-form/use-form/blob/53debd6986650f76561795f2069d6eebc5db6c65/LICENSE) licensed.

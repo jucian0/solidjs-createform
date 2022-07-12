@@ -15,9 +15,9 @@ export async function asyncValidation<T>(values: T, schema?: Schema<T>) {
    })
 }
 
-export function syncValidation<TValues extends {}>(
-   values: TValues,
-   validationSchema: Schema<TValues>,
+export function syncValidation<T extends {}>(
+   values: T,
+   validationSchema: Schema<T>,
    errors: any
 ) {
    try {
