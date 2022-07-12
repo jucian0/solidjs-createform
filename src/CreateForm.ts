@@ -1,8 +1,8 @@
-import { createStore, Part, SetStoreFunction } from 'solid-js/store'
+import { createStore } from 'solid-js/store'
 import { parseInputValue } from './ParseInputValue'
 import { createInitialTouched } from './CreateInitialTouched'
 import { ProtoForm } from './Types'
-import { asyncValidation, syncValidation } from './Validate'
+import { syncValidation } from './Validate'
 import { clone, get, nameToPath, set } from './ObjectUtils'
 import { createInitialErrors } from './CreateInitialErrors'
 
@@ -17,14 +17,14 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
    const [touchedState, setTouchedState] = createStore(clone(initialTouched))
    const [valuesState, setValuesState] = createStore(clone(initialValues))
 
-   const _validate = (values: T['initialValues']) => {
+   function _validate(values: T['initialValues']) {
       const _errors = syncValidation(values, validationSchema, initialErrors)
       setErrorsState(_errors)
    }
 
    _validate(initialValues)
 
-   const _onInputHandle = (e: any) => {
+   function _onInputHandle(e: any) {
       const value = parseInputValue(e)
       const next = set(valuesState, e.target.name, value)
       setValuesState(next)
@@ -32,15 +32,12 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       _validate(next)
    }
 
-   const _onBlurHandle = (e: any) => {
+   function _onBlurHandle(e: any) {
       const path = nameToPath(e.target.name)
       setTouchedState<any>(...path, true)
    }
 
-   const setValues = (
-      pathOrValue: string | T['initialValues'],
-      partial?: any
-   ) => {
+   function setValues(pathOrValue: string | T['initialValues'], partial?: any) {
       if (typeof pathOrValue === 'string') {
          const next = set(valuesState, pathOrValue, partial)
          _validate(next)
@@ -50,17 +47,26 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       return setValuesState(pathOrValue)
    }
 
-   const setErrors: SetStoreFunction<T['initialValues']> = (...args: any[]) => {
-      setErrorsState(...(args as [Part<T>]))
+   function setErrors(pathOrValue: string | T['initialValues'], partial?: any) {
+      if (typeof pathOrValue === 'string') {
+         const next = set(errorsState, pathOrValue, partial)
+         return setErrorsState(next)
+      }
+      return setErrorsState(pathOrValue)
    }
 
-   const setTouched: SetStoreFunction<T['initialValues']> = (
-      ...args: any[]
-   ) => {
-      setTouchedState(...(args as [Part<T>]))
+   function setTouched(
+      pathOrValue: string | T['initialValues'],
+      partial?: any
+   ) {
+      if (typeof pathOrValue === 'string') {
+         const next = set(errorsState, pathOrValue, partial)
+         return setTouchedState(next)
+      }
+      return setTouchedState(pathOrValue)
    }
 
-   const register = (name: string, type: string) => {
+   function register(name: string, type: string) {
       const value = get(valuesState, name)
       return {
          onInput: _onInputHandle,
@@ -71,10 +77,9 @@ export function createForm<T extends ProtoForm<T['initialValues']>>(
       }
    }
 
-   const handleSubmit = (callbackFn: (values: T['initialValues']) => void) => {
+   function handleSubmit(callbackFn: (values: T['initialValues']) => void) {
       return (event: any) => {
          event.preventDefault()
-         _validate(valuesState)
          callbackFn(valuesState)
       }
    }
