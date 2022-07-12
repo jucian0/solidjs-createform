@@ -28,7 +28,7 @@ const App: Component = () => {
    })
 
    createEffect(() => {
-      // console.log(form.touched.address.street, 'touched')
+      console.log(form.touched.address.street, 'touched')
    })
 
    createEffect(() => {
@@ -38,7 +38,7 @@ const App: Component = () => {
    return (
       <div class={styles.App}>
          <h1>Solid-JS</h1>
-         <form>
+         <form onSubmit={form.handleSubmit(values => console.log(values))}>
             <div>
                <input {...register('name', 'text')} placeholder="Name" />
                <span>{form.errors.name}</span>
@@ -80,12 +80,7 @@ const App: Component = () => {
                set All
             </button>
 
-            <button
-               type="button"
-               onClick={form.handleSubmit(values => console.log(values))}
-            >
-               Submit
-            </button>
+            <button type="submit">Submit</button>
          </form>
       </div>
    )
