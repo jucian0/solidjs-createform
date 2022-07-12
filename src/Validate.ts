@@ -1,12 +1,6 @@
 import { Schema, ValidationError } from 'yup'
 import { set } from './ObjectUtils'
 
-type ErrorList = ValidationError['inner']
-
-export function makeDotNotation(str: string) {
-   return str.split('[').join('.').split(']').join('')
-}
-
 export async function asyncValidation<T>(values: T, schema?: Schema<T>) {
    return new Promise(async (resolve, reject) => {
       try {
@@ -20,21 +14,6 @@ export async function asyncValidation<T>(values: T, schema?: Schema<T>) {
       }
    })
 }
-
-// export function syncValidation<T>(
-//   values: T,
-//   schema?: Schema<T>,
-//   errors: any
-// ): ErrorList {
-//   try {
-//     schema?.validateSync(values, { abortEarly: false })
-//   } catch (err) {
-//     if (err instanceof ValidationError) {
-//       return err.inner.con
-//     }
-//   }
-//   return []
-// }
 
 export function syncValidation<TValues extends {}>(
    values: TValues,
