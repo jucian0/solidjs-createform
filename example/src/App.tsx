@@ -24,7 +24,7 @@ const App: Component = () => {
    const { register } = form
 
    createEffect(() => {
-      //console.log(form.values.name, 'values')
+      console.log(form.values.name, 'values')
    })
 
    createEffect(() => {
