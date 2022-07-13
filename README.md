@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to createform 👋</h1>
+# Welcome to createform 👋
 
 > A SolidJS package to create forms easily and quickly.
 
