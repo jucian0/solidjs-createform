@@ -88,12 +88,12 @@ const form = createForm({
 
 `createForm` receives an object with the following properties:
 
-- `initialValues`: An object with the initial values of the form.
-- `validationSchema`: A validation schema to validate the form. By default, `createForm` uses yup validation schema.
+- ### `initialValues`: An object with the initial values of the form.
+- ### `validationSchema`: A validation schema to validate the form. By default, `createForm` uses yup validation schema.
 
 `createForm` returns an object with the following properties:
 
-- `register`: Register a field to the form.
+- ### `register`: Register a field to the form.
 
   ```js
   const form = createForm({
@@ -109,7 +109,7 @@ const form = createForm({
   <input {...register('name', 'text')} />
   ```
 
-- `handleSubmit`: Handle form submit.
+- ### `handleSubmit`: Handle form submit.
 
   ```jsx
   const form = createForm...
@@ -124,7 +124,7 @@ const form = createForm({
   </form>
   ```
 
-- `errors`: Get errors of the form.
+- ### `errors`: Get errors of the form.
 
   ```jsx
   const form = createForm...
@@ -136,7 +136,7 @@ const form = createForm({
   </form>
   ```
 
-- `touched`: Get touched state of the form.
+- ### `touched`: Get touched state of the form.
 
   ```jsx
   const form = createForm...
@@ -148,7 +148,7 @@ const form = createForm({
   </form>
   ```
 
-- `values`: Get values of the form.
+- ### `values`: Get values of the form.
 
   ```jsx
   const form = createForm...
@@ -163,7 +163,7 @@ const form = createForm({
   </form>
   ```
 
-- `setTouched`: Set touched state of the form.
+- ### `setTouched`: Set touched state of the form.
 
   ```jsx
   const form = createForm...
@@ -175,7 +175,7 @@ const form = createForm({
   </form>
   ```
 
-- `setValues`: Set values of the form.
+- ### `setValues`: Set values of the form.
 
   ```jsx
   const form = createForm...
@@ -199,7 +199,7 @@ const form = createForm({
   </form>
   ```
 
-- `setErrors`: Set errors of the form.
+- ### `setErrors`: Set errors of the form.
 
   ```jsx
   const form = createForm...
@@ -223,7 +223,7 @@ const form = createForm({
   </form>
   ```
 
-- `resetForm`: Reset the form.
+- ### `resetForm`: Reset the form.
 
   ```jsx
   const form = createForm...
@@ -235,7 +235,7 @@ const form = createForm({
   </form>
   ```
 
-- `resetValues`: Reset values of the form.
+- ### `resetValues`: Reset values of the form.
 
   ```jsx
   const form = createForm...
@@ -247,7 +247,7 @@ const form = createForm({
   </form>
   ```
 
-- `resetErrors`: Reset errors of the form.
+- ### `resetErrors`: Reset errors of the form.
 
   ```jsx
   const form = createForm...
@@ -259,7 +259,7 @@ const form = createForm({
   </form>
   ```
 
-- `resetTouched`: Reset touched state of the form.
+- ### `resetTouched`: Reset touched state of the form.
 
   ```jsx
   const form = createForm...
