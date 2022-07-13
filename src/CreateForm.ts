@@ -86,6 +86,24 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T): Form<T> {
       }
    }
 
+   function resetForm() {
+      setValuesState(initialValues)
+      setErrorsState(initialErrors)
+      setTouchedState(initialTouched)
+   }
+
+   function resetValues() {
+      setValuesState(initialValues)
+   }
+
+   function resetErrors() {
+      setErrorsState(initialErrors)
+   }
+
+   function resetTouched() {
+      setTouchedState(initialTouched)
+   }
+
    onMount(() => _validate(initialValues))
 
    return {
@@ -96,6 +114,10 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T): Form<T> {
       setValues,
       setErrors,
       setTouched,
-      handleSubmit
+      handleSubmit,
+      resetForm,
+      resetValues,
+      resetErrors,
+      resetTouched
    }
 }

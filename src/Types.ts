@@ -49,6 +49,14 @@ type SetValues<T extends ProtoForm<T>> = (
    partial?: any
 ) => void
 
+type ResetForm = () => void
+
+type ResetValues = () => void
+
+type ResetErrors = () => void
+
+type ResetTouched = () => void
+
 export type Form<T extends ProtoForm<T>> = {
    /**
     * Represents the current values of the form.
@@ -125,4 +133,28 @@ export type Form<T extends ProtoForm<T>> = {
     * @param callbackFn - callback function to call when submit is clicked
     */
    handleSubmit: (callbackFn: (values: Values<T>) => void) => (e: any) => void
+   /**
+    * Reset the form.
+    * @example
+    * resetForm()
+    */
+   resetForm: ResetForm
+   /**
+    * Reset the values of the form.
+    * @example
+    * resetValues()
+    */
+   resetValues: ResetValues
+   /**
+    * Reset the errors of the form.
+    * @example
+    * resetErrors()
+    */
+   resetErrors: ResetErrors
+   /**
+    * Reset the touched of the form.
+    * @example
+    * resetTouched()
+    */
+   resetTouched: ResetTouched
 }
