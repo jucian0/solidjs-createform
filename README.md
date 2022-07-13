@@ -4,11 +4,13 @@
 
 # createform
 
-Createform is an open-source package to create forms for SolidJS applications. It's based on [useForm](https://useform.org)
+Createform is an open-source package to create forms for SolidJS applications. It's based on [useForm](https://github.com/Jucian0/useform)
 
 ## Motivation
 
-Since SolidJS is a new framework, there is no existing great package to create forms. I decided to create this package to simplify the process of creating forms. Createform supports the following features:
+I decided to create a package that could simplify the creation of forms, and, make it easier to use. After a quick research, I found that there are not many packages to create forms for SolidJs, so I decided to create one, that could be used by anyone.
+
+The main idea is to create a form easily and quickly, without many lines of code, fortunately, SolidJs provides us a powerful and easy way to do that.
 
 - Creates form with fields
 - Creates form with validation
@@ -161,7 +163,7 @@ const form = createForm({
   </form>
   ```
 
-- `setTouched`: Set touched state of the form.
+- `setTouched`: Set the touched state of the form.
 
   ```jsx
   const form = createForm...
@@ -173,7 +175,7 @@ const form = createForm({
   </form>
   ```
 
-- `setValues`: Set values of the form.
+- `setValues`: Set the values of the form.
 
   ```jsx
   const form = createForm...
@@ -268,3 +270,11 @@ const form = createForm({
     <button onClick={() => resetTouched()}>Reset touched</button>
   </form>
   ```
+
+## Let us know what you think
+
+Feel free to [open an issue](https://github.com/Jucian0/solidjs-createform/issues) if you have any feedback, or if you want to contribute.
+
+## Show your support
+
+Give us a star on [GitHub](https://github.com/Jucian0/solidjs-createform) if you like this project.

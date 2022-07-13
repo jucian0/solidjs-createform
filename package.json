@@ -1,5 +1,5 @@
 {
-  "name": "solid-js-createform",
+  "name": "solidjs-createform",
   "version": "0.0.1",
   "description": "createform provides a way to create complex forms easily for SolidJS.",
   "keywords": [
@@ -22,8 +22,8 @@
   "author": "Jucian0 <juciano@outlook.com.br>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jucian0/createform",
-    "homepage": "https://github.com/jucian0/createform"
+    "url": "https://github.com/jucian0/solidjs-createform",
+    "homepage": "https://github.com/jucian0/solidjs-createform"
   },
   "license": "MIT",
   "engines": {
@@ -78,7 +78,6 @@
     "@types/yup": "^0.29.0",
     "babel-jest": "^26.6.2",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "colors": "^1.4.0",
     "commitizen": "^4.1.2",
     "coveralls": "^3.1.0",
     "cross-env": "^7.0.2",
@@ -90,10 +89,7 @@
     "jest-environment-jsdom": "^26.0.1",
     "jest-environment-jsdom-fourteen": "^1.0.1",
     "lint-staged": "^10.2.4",
-    "lodash.camelcase": "^4.3.0",
     "prettier": "^2.0.5",
-    "prompt": "^1.0.0",
-    "replace-in-file": "^6.0.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.10.5",
     "rollup-plugin-commonjs": "^10.1.0",
