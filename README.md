@@ -259,7 +259,7 @@ const form = createForm({
   </form>
   ```
 
-- `resetTouched`: Reset touched state of the form.
+- `resetTouched`: Reset the touched state of the form.
 
   ```jsx
   const form = createForm...
