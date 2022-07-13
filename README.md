@@ -86,7 +86,12 @@ const form = createForm({
 
 ## API
 
-createForm has the following API:
+`createForm` receives an object with the following properties:
+
+- `initialValues`: An object with the initial values of the form.
+- `validationSchema`: A validation schema to validate the form. By default, `createForm` uses yup validation schema.
+
+`createForm` returns an object with the following properties:
 
 - `register`: Register a field to the form.
 
