@@ -1,5 +1,3 @@
-![Logo](img/logo3.png)
-
 <h1 align="center">Welcome to createform 👋</h1>
 
 > A SolidJS package to create forms easily and quickly.
