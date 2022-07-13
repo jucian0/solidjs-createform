@@ -1,10 +1,22 @@
+/**
+ * ProtoForm types are used to define the type of a field in a form.
+ * It's not a form itself, but it's used to create a real form.
+ */
 export type ProtoForm<T extends ProtoForm<T>> = {
    initialValues: T['initialValues']
    validationSchema?: any
 }
 
+/**
+ * Native types that can be used in a input field.
+ */
 export type NativeValue = boolean | string | number
 
+/**
+ * Errors types are used to define the type of errors in a form.
+ * It's created based on the initial values, but we change the input value type to string.
+ * So we can display the error message in the input field.
+ */
 export type Errors<T> = {
    [k in keyof T]: T[k] extends NativeValue
       ? string
@@ -13,6 +25,11 @@ export type Errors<T> = {
       : Errors<T[k]>
 }
 
+/**
+ * Touched types are used to define the type of touched in a form.
+ * It's created based on the initial values, but we change the input value type to boolean.
+ * So we can validate if the input field is touched.
+ */
 export type Touched<T> = {
    [k in keyof T]: T[k] extends NativeValue
       ? boolean
@@ -21,6 +38,10 @@ export type Touched<T> = {
       : Touched<T[k]>
 }
 
+/**
+ * Values types are used to define the type of values in a form.
+ * It's created based on the initial values.
+ */
 export type Values<T extends ProtoForm<T>> = T['initialValues']
 
 type Register = (
@@ -35,19 +56,21 @@ type Register = (
 }
 
 type SetTouched<T extends ProtoForm<T>> = (
-   pathOrValue: string | Touched<Values<T>>,
+   pathOrValue: FormSetterParam<Touched<Values<T>>>,
    partial?: any
 ) => void
 
 type SetErrors<T extends ProtoForm<T>> = (
-   pathOrValue: string | Errors<Values<T>>,
+   pathOrValue: FormSetterParam<Errors<Values<T>>>,
    partial?: any
 ) => void
 
 type SetValues<T extends ProtoForm<T>> = (
-   pathOrValue: string | Values<T>,
+   pathOrValue: FormSetterParam<Values<T>>,
    partial?: any
 ) => void
+
+type FormSetterParam<T> = string | T
 
 type ResetForm = () => void
 
@@ -135,6 +158,7 @@ export type Form<T extends ProtoForm<T>> = {
    handleSubmit: (callbackFn: (values: Values<T>) => void) => (e: any) => void
    /**
     * Reset the form.
+    * It will reset the values, errors and touched.
     * @example
     * resetForm()
     */
@@ -147,6 +171,8 @@ export type Form<T extends ProtoForm<T>> = {
    resetValues: ResetValues
    /**
     * Reset the errors of the form.
+    * It will reset the errors of the form, the initial errors is created based on the initial values,
+    * after a validation process based on the validation schema.
     * @example
     * resetErrors()
     */
