@@ -4,16 +4,17 @@ import { createInitialTouched } from './CreateInitialTouched'
 import { Errors, Form, ProtoForm, Touched, Values } from './Types'
 import { syncValidation } from './Validate'
 import { clone, get, set } from './ObjectUtils'
-import { createInitialErrors } from './CreateInitialErrors'
 import { onMount } from 'solid-js'
+import { createInitialErrors } from './CreateInitialErrors'
 
 export function createForm<T extends ProtoForm<T>>(protoForm: T): Form<T> {
    const { validationSchema, initialValues } = protoForm
-   const initialErrors = createInitialErrors(initialValues)
+   const protoInitialErrors = createInitialErrors(initialValues)
+   const initialErrors = _validate(initialValues)
    const initialTouched = createInitialTouched(initialValues)
 
    const [errorsState, setErrorsState] = createStore<Errors<Values<T>>>(
-      clone(initialErrors)
+      clone(protoInitialErrors)
    )
    const [touchedState, setTouchedState] = createStore<Touched<Values<T>>>(
       clone(initialTouched)
@@ -23,15 +24,14 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T): Form<T> {
    )
 
    function _validate(values: Values<T>) {
-      const _errors = syncValidation(values, validationSchema, initialErrors)
-      setErrorsState(_errors)
+      return syncValidation(values, validationSchema, protoInitialErrors)
    }
 
    function _onInputHandle(e: any) {
       const value = parseInputValue(e)
       const next = set(valuesState, e.target.name, value)
       setValuesState(next)
-      _validate(next)
+      setErrorsState(_validate(next))
    }
 
    function _onBlurHandle(e: any) {
@@ -42,10 +42,10 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T): Form<T> {
    function setValues(pathOrValue: string | Values<T>, partial?: any) {
       if (typeof pathOrValue === 'string') {
          const next = set(valuesState, pathOrValue, partial)
-         _validate(next)
+         setErrorsState(_validate(next))
          return setValuesState(next)
       }
-      _validate(pathOrValue)
+      setErrorsState(_validate(pathOrValue))
       return setValuesState(pathOrValue)
    }
 
@@ -104,7 +104,7 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T): Form<T> {
       setTouchedState(initialTouched)
    }
 
-   onMount(() => _validate(initialValues))
+   onMount(() => setErrorsState(_validate(initialValues)))
 
    return {
       values: valuesState,

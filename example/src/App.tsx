@@ -4,7 +4,7 @@ import * as yup from 'yup'
 import { createForm } from './../../src'
 const form = createForm({
    initialValues: {
-      name: '',
+      name: 'Paulo',
       email: '',
       address: {
          street: '',
@@ -74,11 +74,19 @@ const App: Component = () => {
             <button
                type="button"
                onClick={() =>
-                  form.setValues('address', { street: 'Virginio', number: 23 })
+                  form.setValues({
+                     name: 'Andre Silva',
+                     email: 'andre@hotmail.com',
+                     address: { street: 'Virginio', number: 23 }
+                  })
                }
             >
                set All
             </button>
+            <button onClick={form.resetForm}>reset form</button>
+            <button onClick={form.resetErrors}>reset errors</button>
+            <button onClick={form.resetTouched}>reset touched</button>
+            <button onClick={form.resetValues}>reset values</button>
 
             <button type="submit">Submit</button>
          </form>
