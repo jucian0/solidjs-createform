@@ -1,9 +1,9 @@
 # Welcome to createform 👋
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Jucian0/solidjs-createform/blob/main/LICENCE)
+<!-- [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Jucian0/solidjs-createform/blob/main/LICENCE)
 [![](https://img.shields.io/badge/version-1.0.1-orange.svg)](https://github.com/Jucian0/solidjs-createform/releases/tag/v1.0.1)
 [![COverage](https://img.shields.io/badge/coverage-98.31%25-green)](coverage)
-[![COverage](https://img.shields.io/badge/npm-v1.0.1-red)](https://www.npmjs.com/package/solid-js-createform)
+[![COverage](https://img.shields.io/badge/npm-v1.0.1-red)](https://www.npmjs.com/package/solid-js-createform) -->
 
 > A SolidJS package to create forms easily and quickly.
 
