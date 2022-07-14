@@ -79,5 +79,6 @@ export function set<T extends { [k: string]: any }>(
 }
 
 export function clone<T>(obj: T) {
-   return structuredClone(obj)
+   return JSON.parse(JSON.stringify(obj))
+   //return structuredClone(obj)
 }

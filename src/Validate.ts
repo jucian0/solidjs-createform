@@ -1,27 +1,16 @@
-import { Schema, ValidationError } from 'yup'
+import { isSchema, SchemaOf } from 'yup'
 import { set } from './ObjectUtils'
-
-export async function asyncValidation<T>(values: T, schema?: Schema<T>) {
-   return new Promise(async (resolve, reject) => {
-      try {
-         await schema?.validate(values, { abortEarly: false })
-         resolve({})
-      } catch (err) {
-         if (err instanceof ValidationError) {
-            console.log(err)
-            reject(err)
-         }
-      }
-   })
-}
 
 export function syncValidation<T extends {}>(
    values: T,
-   validationSchema: Schema<T>,
+   schema: SchemaOf<T>,
    errors: any
 ) {
+   if (schema && !isSchema(schema)) {
+      throw new Error('Schema is not a valid yup schema')
+   }
    try {
-      validationSchema?.validateSync(values, { abortEarly: false })
+      schema?.validateSync(values, { abortEarly: false })
       return errors
    } catch (err: any) {
       return err.inner.reduce((acc: any, key: any) => {

@@ -4,7 +4,6 @@ import { createInitialTouched } from './CreateInitialTouched'
 import { Errors, Form, ProtoForm, Touched, Values } from './Types'
 import { syncValidation } from './Validate'
 import { clone, get, set } from './ObjectUtils'
-import { onMount } from 'solid-js'
 import { createInitialErrors } from './CreateInitialErrors'
 
 export function createForm<T extends ProtoForm<T>>(protoForm: T): Form<T> {
@@ -104,7 +103,7 @@ export function createForm<T extends ProtoForm<T>>(protoForm: T): Form<T> {
       setTouchedState(initialTouched)
    }
 
-   onMount(() => setErrorsState(_validate(initialValues)))
+   setErrorsState(_validate(initialValues))
 
    return {
       values: valuesState,
