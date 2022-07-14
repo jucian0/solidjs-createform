@@ -1,8 +1,3 @@
-/*
- * For a detailed explanation regarding each configuration property and type check, visit:
- * https://jestjs.io/docs/en/configuration.html
- */
-
 export default {
    clearMocks: true,
    coverageDirectory: 'coverage',
@@ -11,5 +6,6 @@ export default {
    },
    testRegex: '(/tests/.*|\\.(test|spec))\\.(ts|tsx)$',
    moduleFileExtensions: ['ts', 'tsx', 'js'],
-   collectCoverageFrom: ['src/**/*.{ts,tsx}']
+   collectCoverageFrom: ['src/**/*.{ts,tsx}'],
+   coveragePathIgnorePatterns: ['/node_modules/', '/src/index.ts']
 }

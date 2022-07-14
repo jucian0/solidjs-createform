@@ -58,4 +58,63 @@ describe('Dot get', () => {
       const obj = { foo: ['bar'] }
       expect(Dot.get(obj, 'foo[1]')).toEqual(undefined)
    })
+
+   it('Should return a value in a array in a nested object', () => {
+      const obj = { foo: { bar: ['bar'] } }
+      expect(Dot.get(obj, 'foo.bar[0]')).toEqual('bar')
+   })
+
+   it('Should return a value  in a array of objects', () => {
+      const obj = { foo: [{ bar: 'bar' }] }
+      expect(Dot.get(obj, 'foo[0].bar')).toEqual('bar')
+   })
+
+   it('Should return a null  in a array of objects that the value is null', () => {
+      const obj = { foo: [{ bar: null }] }
+      expect(Dot.get(obj, 'foo[0].bar')).toEqual(null)
+   })
+})
+
+describe('Dot isEmpty', () => {
+   it('Should return true when object is empty', () => {
+      expect(Dot.isEmpty({})).toEqual(true)
+   })
+
+   it('Should return false when object is not empty', () => {
+      expect(Dot.isEmpty({ foo: 'bar' })).toEqual(false)
+   })
+})
+
+describe('Dot replacePrimitivesInObject', () => {
+   it('Should replace primitives in object', () => {
+      const obj = { foo: 'bar' }
+      const newObj = Dot.replacePrimitivesInObject(obj, 'baz')
+      expect(newObj).toEqual({ foo: 'baz' })
+   })
+
+   it('Should replace primitives in object in array', () => {
+      const obj = { foo: ['bar'] }
+      const newObj = Dot.replacePrimitivesInObject(obj, 'baz')
+      expect(newObj).toEqual({ foo: ['baz'] })
+   })
+})
+
+describe('Dot clone', () => {
+   it('Should clone an object', () => {
+      const obj = { foo: 'bar' }
+      const newObj = Dot.clone(obj)
+      expect(newObj).toEqual(obj)
+   })
+
+   it('Should clone an object in array', () => {
+      const obj = { foo: ['bar'] }
+      const newObj = Dot.clone(obj)
+      expect(newObj).toEqual(obj)
+   })
+
+   it('Should clone an object in nested object', () => {
+      const obj = { foo: { bar: 'bar' } }
+      const newObj = Dot.clone(obj)
+      expect(newObj).toEqual(obj)
+   })
 })
