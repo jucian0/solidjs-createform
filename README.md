@@ -93,188 +93,189 @@ const form = createForm({
 
 `createForm` receives an object with the following properties:
 
-- `initialValues`: An object with the initial values of the form.
-- `validationSchema`: A validation schema to validate the form. By default, `createForm` uses yup validation schema.
+### `initialValues`: An object with the initial values of the form.
+
+### `validationSchema`: A validation schema to validate the form. By default, `createForm` uses yup validation schema.
 
 `createForm` returns an object with the following properties:
 
-- `register`: Register a field to the form.
+### `register`: Register a field to the form.
 
-  ```js
-  const form = createForm({
-    initialValues: {
-      name: '',
-      email: '',
-      password: ''
-    }
-  })
+```js
+const form = createForm({
+  initialValues: {
+    name: '',
+    email: '',
+    password: ''
+  }
+})
 
-  const { register, handleSubmit, errors } = form
+const { register, handleSubmit, errors } = form
 
+<input {...register('name', 'text')} />
+```
+
+### `handleSubmit`: Handle form submit.
+
+```jsx
+const form = createForm...
+
+const { register, handleSubmit, errors } = form
+
+<form onSubmit={handleSubmit(onSubmit)}>
   <input {...register('name', 'text')} />
-  ```
+  <input {...register('email', 'email')} />
+  <input {...register('password', 'password')} />
+  <button type="submit">Submit</button>
+</form>
+```
 
-- `handleSubmit`: Handle form submit.
+### `errors`: Get errors of the form.
 
-  ```jsx
-  const form = createForm...
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors } = form
 
-  const { register, handleSubmit, errors } = form
+<form onSubmit={handleSubmit(onSubmit)}>
+  <input {...register('name', 'text')} />
+  <span> {errors.name}</span>
+</form>
+```
 
-  <form onSubmit={handleSubmit(onSubmit)}>
-    <input {...register('name', 'text')} />
-    <input {...register('email', 'email')} />
-    <input {...register('password', 'password')} />
-    <button type="submit">Submit</button>
-  </form>
-  ```
+### `touched`: Get touched state of the form.
 
-- `errors`: Get errors of the form.
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, touched } = form
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors } = form
+<form>
+  <input {...register('name', 'text')} />
+  <span> {touched.name ? errors.name : ''}</span>
+</form>
+```
 
-  <form onSubmit={handleSubmit(onSubmit)}>
-    <input {...register('name', 'text')} />
-    <span> {errors.name}</span>
-  </form>
-  ```
+### `values`: Get values of the form.
 
-- `touched`: Get touched state of the form.
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, values } = form
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, touched } = form
+createEffect(() => {
+  console.log(values.name)
+})
 
-  <form>
-    <input {...register('name', 'text')} />
-    <span> {touched.name ? errors.name : ''}</span>
-  </form>
-  ```
+<form>
+  <input {...register('name', 'text')} />
+</form>
+```
 
-- `values`: Get values of the form.
+### `setTouched`: Set the touched state of the form.
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, values } = form
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, setTouched } = form
 
-  createEffect(() => {
-    console.log(values.name)
-  })
+<form>
+  <input {...register('name', 'text')} />
+  <button onClick={() => setTouched('name')}>Touch</button>
+</form>
+```
 
-  <form>
-    <input {...register('name', 'text')} />
-  </form>
-  ```
+### `setValues`: Set the values of the form.
 
-- `setTouched`: Set the touched state of the form.
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, setValues } = form
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, setTouched } = form
+<form>
+  <input {...register('name', 'text')} />
+  <button onClick={() => setValues({ name: 'John' })}>Set values</button>
+</form>
+```
 
-  <form>
-    <input {...register('name', 'text')} />
-    <button onClick={() => setTouched('name')}>Touch</button>
-  </form>
-  ```
+or
 
-- `setValues`: Set the values of the form.
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, setValues } = form
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, setValues } = form
+<form>
+  <input {...register('name', 'text')} />
+  <button onClick={() => setValues('name','John')}>Set values</button>
+</form>
+```
 
-  <form>
-    <input {...register('name', 'text')} />
-    <button onClick={() => setValues({ name: 'John' })}>Set values</button>
-  </form>
-  ```
+### `setErrors`: Set errors of the form.
 
-  or
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, setErrors } = form
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, setValues } = form
+<form>
+  <input {...register('name', 'text')} />
+  <button onClick={() => setErrors('name', 'Name is required')}>Set errors</button>
+</form>
+```
 
-  <form>
-    <input {...register('name', 'text')} />
-    <button onClick={() => setValues('name','John')}>Set values</button>
-  </form>
-  ```
+or
 
-- `setErrors`: Set errors of the form.
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, setErrors } = form
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, setErrors } = form
+<form>
+  <input {...register('name', 'text')} />
+  <button onClick={() => setErrors({name:'Name is required'})}>Set errors</button>
+</form>
+```
 
-  <form>
-    <input {...register('name', 'text')} />
-    <button onClick={() => setErrors('name', 'Name is required')}>Set errors</button>
-  </form>
-  ```
+### `resetForm`: Reset the form.
 
-  or
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, resetForm } = form
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, setErrors } = form
+<form>
+  <input {...register('name', 'text')} />
+  <button onClick={() => resetForm()}>Reset form</button>
+</form>
+```
 
-  <form>
-    <input {...register('name', 'text')} />
-    <button onClick={() => setErrors({name:'Name is required'})}>Set errors</button>
-  </form>
-  ```
+### `resetValues`: Reset values of the form.
 
-- `resetForm`: Reset the form.
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, resetValues } = form
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, resetForm } = form
+<form>
+  <input {...register('name', 'text')} />
+  <button onClick={() => resetValues()}>Reset values</button>
+</form>
+```
 
-  <form>
-    <input {...register('name', 'text')} />
-    <button onClick={() => resetForm()}>Reset form</button>
-  </form>
-  ```
+### `resetErrors`: Reset errors of the form.
 
-- `resetValues`: Reset values of the form.
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, resetErrors } = form
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, resetValues } = form
+<form>
+  <input {...register('name', 'text')} />
+  <button onClick={() => resetErrors()}>Reset errors</button>
+</form>
+```
 
-  <form>
-    <input {...register('name', 'text')} />
-    <button onClick={() => resetValues()}>Reset values</button>
-  </form>
-  ```
+### `resetTouched`: Reset the touched state of the form.
 
-- `resetErrors`: Reset errors of the form.
+```jsx
+const form = createForm...
+const { register, handleSubmit, errors, resetTouched } = form
 
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, resetErrors } = form
-
-  <form>
-    <input {...register('name', 'text')} />
-    <button onClick={() => resetErrors()}>Reset errors</button>
-  </form>
-  ```
-
-- `resetTouched`: Reset the touched state of the form.
-
-  ```jsx
-  const form = createForm...
-  const { register, handleSubmit, errors, resetTouched } = form
-
-  <form>
-    <input {...register('name', 'text')} />
-    <button onClick={() => resetTouched()}>Reset touched</button>
-  </form>
-  ```
+<form>
+  <input {...register('name', 'text')} />
+  <button onClick={() => resetTouched()}>Reset touched</button>
+</form>
+```
 
 ## Let us know what you think
 
